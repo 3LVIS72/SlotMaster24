@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/CSS/global.css"/>          <!-- Globale Styles -->
+    <link rel="stylesheet" href="/Spiele/RollTheDice/rollTheDice.css"/>  <!-- Nur für Über-uns-Seite -->
+    <title>SlotMaster24 - RollTheDice</title>
+  </head>
+  <body>
+    <nav>
+      <div class="nav__header">
+        <div class="nav__logo">
+          <a href="/HTML/home.html">SlotMaster<span>24</span></a>
+        </div>
+        <div class="nav__menu__btn" id="menu-btn">
+          <span><i class="ri-menu-line"></i></span>
+        </div>
+      </div>
+      <ul class="nav__links" id="nav-links">
+        <li><a href="/HTML/home.html">Home</a></li>
+        <li><a href="/HTML/spiele.html">Spiele</a></li>
+        <li><a href="/HTML/überuns.html">Über uns</a></li>
+        <li><a href="/HTML/kontakt.html">Kontakt</a></li>
+      </ul>
+      <div class="nav__btns">
+        <a href="registrierung.html" class="btn sign__up">Registierung</a>
+        <a href="login.html" class="btn sign__in">Anmelden</a>
+      </div>
+    </nav>
+
+    <!-- nav__header -->
+<main>
+  <!-- === RollTheDice Game === -->
+  <section class="rtd">
+    <div class="rtd__wrap">
+      <aside class="rtd__panel">
+        <h2 class="rtd__title">RollTheDice – High / Low</h2>
+        <ul class="rtd__rules">
+          <li>Pro Spiel: <b>5 Coins</b></li>
+          <li>Gewinn: <b>+10 Coins</b></li>
+          <li>Gleichstand: <b>Push</b> (Einsatz zurück)</li>
+        </ul>
+        <div class="rtd__bank">
+          <span>Coins:</span>
+          <strong id="rtd-bank">100</strong>
+        </div>
+        <div class="rtd__target">
+          Zielzahl (3–11): <strong id="rtd-target">–</strong>
+        </div>
+        <div class="rtd__actions">
+          <button id="rtd-new" class="btn rtd__btn">Neues Spiel</button>
+        </div>
+      </aside>
+
+      <div class="rtd__stage">
+        <!-- Animierter Würfel (zentral) -->
+        <div id="rtd-cube" class="rtd__cube" aria-label="Würfel Animation">🎲</div>
+
+        <!-- Auswahl High/Low -->
+        <div class="rtd__choices" role="group" aria-label="Wette auswählen">
+          <button id="rtd-low" class="rtd__choice" aria-pressed="false">Niedriger</button>
+          <button id="rtd-high" class="rtd__choice" aria-pressed="false">Höher</button>
+        </div>
+
+        <!-- Start -->
+        <div class="rtd__play">
+          <button id="rtd-roll" class="btn rtd__btn primary">Jetzt würfeln</button>
+        </div>
+
+        <!-- Ergebnisanzeige -->
+        <div class="rtd__result" id="rtd-result" aria-live="polite">
+          Bereit. Klicke auf <em>Neues Spiel</em>, wähle Höher/Niedriger und starte.
+        </div>
+
+        <!-- Geworfene zwei Würfel -->
+        <div class="rtd__diceout">
+          <span id="rtd-d1" class="rtd__die">–</span>
+          <span id="rtd-d2" class="rtd__die">–</span>
+          <span class="rtd__sum">Summe: <strong id="rtd-sum">–</strong></span>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+       <!-- Footer -->
+       <footer class="footer_ueber_uns">
+        <p>&copy; 2025 SlotMaster24 – Alle Rechte vorbehalten</p>
+        <p>
+          <a href="/HTML/impressum.html">Impressum</a> |
+          <a href="/HTML/datenschutz.html">Datenschutz</a> |
+          <a href="/HTML/kontakt.html">Kontakt</a>
+        </p>
+      </footer>
+      <script src="/Spiele/RollTheDice/rollTheDice.js" defer></script>
+    </body>
+</html>
