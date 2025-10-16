@@ -20,6 +20,6 @@ SlotMaster24 ist eine virtuelle Spielhalle mit verschiedenen Slot-Machine Spiele
 
 ## 🚀 Installation
 ```bash
-git clone https://github.com/DEIN_USERNAME/SlotMaster24.git
+git clone https://github.com/3LVIS72/SlotMaster24.git
 cd SlotMaster24
 # Öffne index.html im Browser
