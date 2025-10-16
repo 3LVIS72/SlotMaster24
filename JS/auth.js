@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', function() {
             
             if (handleLogin(username, password)) {
                 alert('Login erfolgreich!');
-                window.location.href = '/HTML/dashboard.html'; // ✅ GEÄNDERT: Zu dashboard.html
+                window.location.href = '/HTML/dashboard.html';
             } else {
                 alert('Falscher Benutzername oder Passwort!');
             }
@@ -98,7 +98,7 @@ function checkLoginStatus() {
     const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
     const currentPage = window.location.pathname;
     
-    // ✅ GEÄNDERT: Dashboard + Spiele sind geschützt
+    // Dashboard + Spiele sind geschützt
     const protectedPages = ['/HTML/dashboard.html', '/HTML/spiele.html'];
     
     // Wenn auf GESCHÜTZTER Seite und nicht eingeloggt → zur Login-Seite
@@ -107,13 +107,13 @@ function checkLoginStatus() {
         return;
     }
     
-    // ✅ GEÄNDERT: Wenn auf Login/Registrierung und bereits eingeloggt → zum Dashboard
+    // Wenn auf Login/Registrierung und bereits eingeloggt → zum Dashboard
     if ((currentPage.includes('login.html') || currentPage.includes('registrierung.html')) && isLoggedIn) {
         window.location.href = '/HTML/dashboard.html';
         return;
     }
     
-    // ✅ GEÄNDERT: Wenn auf home.html und eingeloggt → zum Dashboard
+    // Wenn auf home.html und eingeloggt → zum Dashboard
     if (currentPage.includes('home.html') && isLoggedIn) {
         window.location.href = '/HTML/dashboard.html';
         return;
@@ -148,37 +148,53 @@ function updateNavigation() {
         }
     }
     
-    // Welcome-Section anzeigen/verstecken (nur auf home.html)
-    const welcomeSection = document.querySelector('#welcomeSection');
-    const currentUserElement = document.querySelector('#current-user');
-    
-    if (welcomeSection && currentUserElement) {
-        if (isLoggedIn) {
-            welcomeSection.style.display = 'block';
-            currentUserElement.textContent = userUsername;
-        } else {
-            welcomeSection.style.display = 'none';
-        }
-    }
-    
-    // ✅ NEU: Dashboard-Navigation anpassen
-    updateDashboardNavigation(isLoggedIn, userUsername);
+    // ✅ AUTOMATISCHE NAVIGATION: Links für eingeloggte/nicht-eingeloggte Benutzer
+    updateNavLinks(isLoggedIn);
 }
 
-// ✅ NEU: Dashboard-spezifische Navigation
-function updateDashboardNavigation(isLoggedIn, userUsername) {
+// ✅ AUTOMATISCHE NAVIGATION: Links anpassen
+function updateNavLinks(isLoggedIn) {
     const navLinks = document.querySelector('.nav__links');
-    if (navLinks && isLoggedIn) {
-        // Stelle sicher, dass Dashboard Link aktiv ist
-        const links = navLinks.querySelectorAll('a');
-        links.forEach(link => {
-            if (link.getAttribute('href') === '/HTML/dashboard.html') {
+    if (!navLinks) return;
+    
+    const links = navLinks.querySelectorAll('a');
+    const currentPage = window.location.pathname;
+    
+    links.forEach(link => {
+        const href = link.getAttribute('href');
+        
+        if (isLoggedIn) {
+            // EINGELOGGT: Home → Dashboard ändern
+            if (href === '/HTML/home.html') {
+                link.setAttribute('href', '/HTML/dashboard.html');
                 link.textContent = 'Dashboard';
             }
-            if (link.getAttribute('href') === '/HTML/home.html') {
-                link.style.display = 'none'; // Home-Link auf Dashboard ausblenden
+        } else {
+            // NICHT EINGELOGGT: Dashboard → Home ändern
+            if (href === '/HTML/dashboard.html') {
+                link.setAttribute('href', '/HTML/home.html');
+                link.textContent = 'Home';
             }
-        });
+        }
+        
+        // Aktuelle Seite markieren
+        if (href === currentPage || 
+            (currentPage.includes('dashboard.html') && href === '/HTML/dashboard.html') ||
+            (currentPage.includes('home.html') && href === '/HTML/home.html')) {
+            link.style.borderBottom = '4px solid var(--primary-color)';
+        } else {
+            link.style.borderBottom = '4px solid transparent';
+        }
+    });
+    
+    // Logo-Link anpassen
+    const navLogo = document.querySelector('.nav__logo a');
+    if (navLogo) {
+        if (isLoggedIn) {
+            navLogo.setAttribute('href', '/HTML/dashboard.html');
+        } else {
+            navLogo.setAttribute('href', '/HTML/home.html');
+        }
     }
 }
 
@@ -187,7 +203,7 @@ function handleLogout() {
     localStorage.removeItem('isLoggedIn');
     localStorage.removeItem('userUsername');
     localStorage.removeItem('userEmail');
-    window.location.href = '/HTML/home.html'; // Zur öffentlichen Homepage
+    window.location.href = '/HTML/home.html';
 }
 
 // Globale Funktion verfügbar machen
