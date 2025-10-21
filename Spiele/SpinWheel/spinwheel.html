@@ -1,43 +1,76 @@
 <!DOCTYPE html>
 <html lang="de">
-<head>
-    <meta charset="UTF-8">
-    <title>Spin Wheel</title>
-    <link rel="stylesheet" href="/Spiele/SpinWheel/spinwheel.css">
-</head>
-<body>
-    <div class="main">
-        <div class="wheel">
-            <span class="segment segment-1">
-                <p>100 Coins</p>
-            </span>
-            <span class="segment segment-2">
-                <p>Niete</p>
-            </span>
-            <span class="segment segment-3">
-                <p>500 Coins</p>
-            </span>
-            <span class="segment segment-4">
-                <p>Niete</p>
-            </span>
-            <span class="segment segment-5">
-                <p>1000 Coins</p>
-            </span>
-            <span class="segment segment-6">
-                <p>Niete</p>
-            </span>
-            <span class="segment segment-7">
-                <p>10 Coins</p>
-            </span>
-            <span class="segment segment-8">
-                <p>Niete</p>
-            </span>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/CSS/global.css"/>
+    <link rel="stylesheet" href="/Spiele/SpinWheel/spinwheel.css"/>
+    <title>Spinwheel</title>
+  </head>
+  
+  <body>
+    <nav>
+      <div class="nav__header">
+        <div class="nav__logo">
+          <a href="/HTML/home.html"><span>SlotMaster</span>24</a>
         </div>
-        <button id="spin-button">Drehen</button>
-    </div>
-    <div id="result">
-        Drehe das Rad, um zu gewinnen!
-    </div>
-    <script src="/Spiele/SpinWheel/spinwheel.js"></script>
-</body>
+        <div class="nav__menu__btn" id="menu-btn">
+          <span><i class="ri-menu-line"></i></span>
+      </div>
+      </div>
+      <ul class="nav__links" id="nav-links">
+        <li><a href="/HTML/home.html">Home</a></li>
+        <li><a href="/HTML/spiele.html">Spiele</a></li>
+        <li><a href="/HTML/überuns.html">Über uns</a></li>
+        <li><a href="/HTML/kontakt.html">Kontakt</a></li>
+      </ul>
+      <div class="nav__btns">
+        <a href="/HTML/registrierung.html" class="btn sign__up">Registierung</a>
+        <a href="/HTML/login.html" class="btn sign__in">Anmelden</a>
+      </div>
+    </nav>
+
+    <main>
+        <h1> Spin & Win!</h1>
+      <div class="container">
+        <div class="modern-border">
+          <canvas id="wheel"></canvas>
+          <div class="pointer">&#9660;</div>
+        </div>
+        <button id="spinBtn">Drehen</button>
+        <p id="result"></p>
+        <div class="info">
+          <p>Verbleibene Drehungen: <span id="spinsLeft">10</span></p>
+          <p>Gewinn: <span id="score">0</span></p>
+        </div>
+      </div>
+    </main>
+ 
+    <script src="spinwheel.js"></script>
+    
+    <script>
+        const menuBtn = document.getElementById('menu-btn');
+        const navLinks = document.getElementById('nav-links');
+        
+        if (menuBtn && navLinks) {
+            menuBtn.addEventListener('click', () => {
+                // Fügt die 'open'-Klasse hinzu/entfernt sie, um das Menü ein-/auszublenden (gemäß deinem CSS)
+                navLinks.classList.toggle('open');
+            });
+        }
+    </script>
+  
+ <footer>
+      <p>&copy; 2025 SlotMaster24 – Alle Rechte vorbehalten</p>
+      <p>
+        <a href="/HTML/impressum.html">Impressum</a> |
+        <a href="/HTML/datenschutz.html">Datenschutz</a> |
+        <a href="/HTML/kontakt.html">Kontakt</a>
+      </p>
+    </footer>
+  </body>
 </html>

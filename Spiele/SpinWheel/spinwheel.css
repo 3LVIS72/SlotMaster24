@@ -1,150 +1,263 @@
+/* Reset and Base Style*/
+
 * {
+
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    outline: none;
+    font-family: 'Bebas Neue', sans-serif;
+a {
+
+  text-decoration: none;
+  transition: 0.3s;
+
 }
+
+/* WICHTIG: BODY behält das Layout für Header/Footer bei */
 
 body {
-    font-family: sans-serif;
-    display: flex;
-    flex-direction: column; /* Erlaubt Button unter dem Rad */
-    justify-content: center;
-    align-items: center;
-    height: 100vh; /* 100% der Viewport-Höhe */
-    overflow: hidden; 
-    background-image: url('/Bilder/CasinoBG.jpg'); 
-    background-size: cover; /* Passt das Bild so an, dass es den gesamten Bereich ausfüllt, ohne verzerrt zu werden */
-    background-position: center; /* Zentriert das Bild */
-    background-repeat: no-repeat;
-    }
+  font-family: "Bebas Neue", sans-serif; /* Aus Header/Footer CSS */
+  background: #ffffff; /* Hintergrundfarbe aus Glücksrad CSS */
+  color: var(--text-dark); /* Aus Header/Footer CSS */
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column; /* Sorgt dafür, dass der Footer unten bleibt */
+  text-align: center; /* Textzentrierung aus Glücksrad CSS beibehalten */
 
-.main {
-    position: relative;
-    width: 500px;
-    height: 500px;
-    margin-bottom: 30px; /* Abstand zum Button */
-    perspective: 1000px;
+}
+/* WICHTIG: MAIN übernimmt die Zentrierung des Glücksrad-Inhalts */
+main {
+  flex: 2; 
+  width: 50%;
+  
+  /* NEU: Stellt H1 und Container untereinander auf */
+  display: flex;
+  flex-direction: column; 
+  
+  /* ZENTRIERUNG: nur Horizontal */
+  align-items: center; 
+  
+  /* WICHTIG: Entfernt eine feste vertikale Zentrierung, der Inhalt beginnt oben */
+  justify-content: flex-start; 
+  
+  padding-block: 2rem;
+  min-height: auto; 
 }
 
-.wheel {
-    width: 100%;
-    height: 100%;
+/* Stilisiert den H1-Titel */
+
+
+main {  
+   
+  main h1 {
+  
+    width: 100%; /* Nimmt die volle Breite des Main-Elements ein */
+    text-align: center;
+    padding-top: 2rem; /* Abstand nach oben */
+    margin-bottom: 2rem; /* Abstand zum Rad */
+    max-width: var(--max-width);
+
+    }
+
+
+  /* NEUE ZENTRIERUNG für das Glücksrad */
+
+  display: flex;
+  justify-content: center; /* Horizontale Zentrierung */
+  align-items: center; /* Vertikale Zentrierung (falls genügend Platz ist) */
+  padding-block: 2rem; /* Abstand oben/unten (optional) */
+}
+
+.container {
+    width: 90%;
+    max-width: 400px;
+}
+
+/* Modern Subtle border for wheel */
+
+.modern-border {
+
     position: relative;
-    z-index: 1; /* stellt sicher, dass der Zeiger darüber liegen kann */
+    display: inline-block;
+    margin-bottom: 1rem;
     border-radius: 50%;
-    border: 10px solid #333; /* Fester Rand */
-    overflow: hidden;
-    /* Der Übergang für die Dreh-Animation wird später in JavaScript gesteuert */
-    /* transition: all ease 4s; */
-
- /* NEU: Kippt das Rad leicht nach hinten (simuliert einen flachen Winkel) */
-    transform: rotateX(8deg); 
-    
-    /* NEU: 3D-Schattierung für Tiefe */
-    box-shadow: 
-        0 0 10px rgba(0, 0, 0, 0.4),  /* Weicher, innerer Schatten */
-        0 15px 40px rgba(0, 0, 0, 0.9); /* Starker, langer Schatten für Tiefe */
+    box-shadow: 0 0 8px #4a90e2aa, inset 0 0 15px #4a90e2aa;
+    padding: 12px;
+    background: white;
 
 }
 
-/* Basisstil für alle Segmente */
-.segment { 
-    width: 50%;
-    height: 50%;
-    display: block; /* Block-Element für Positionierung */
-    position: absolute;
-    /* Segment-Drehung um den Mittelpunkt des Rades */
-    transform-origin: 100% 100%; 
-    top: 0;
-    left: 0;
-    /* Die Hälfte eines 8-Segments-Winkels (360/8 = 45 Grad) */
-    /* Clip-Path für ein keilförmiges Segment (45 Grad) */
-    clip-path: polygon(0 0, 100% 0, 100% 100%); 
+/* Wheel Style */
+
+#wheel {
+    width: 100%;
+    max-width: 320px;
+    height: auto;
+    border-radius: 50%;
+    background: #ffffff;
+    box-shadow: 0 0 20px rgba(74, 144, 226, 0.6);
+
 }
 
-/* Rotation und Farben für jedes Segment (45 Grad pro Segment) */
-/* Segment 1: 0 Grad (oben rechts) */
-.segment-1 { background-color: #ff1f1f; transform: rotate(0deg); } 
-/* Segment 2: 45 Grad */
-.segment-2 { background-color: #000000; transform: rotate(45deg); }
-/* Segment 3: 90 Grad */
-.segment-3 { background-color: #ff1f1f; transform: rotate(90deg); }
-/* Segment 4: 135 Grad */
-.segment-4 { background-color: #000000; transform: rotate(135deg); }
-/* Segment 5: 180 Grad */
-.segment-5 { background-color: #ff1f1f; transform: rotate(180deg); }
-/* Segment 6: 225 Grad */
-.segment-6 { background-color: #000000; transform: rotate(225deg); }
-/* Segment 7: 270 Grad */
-.segment-7 { background-color: #ff1f1f; transform: rotate(270deg); }
-/* Segment 8: 315 Grad */
-.segment-8 { background-color: #000000; transform: rotate(315deg); }
+/* Pointer Styling */
 
 
-.segment p {
-    font-size: 24px;
-    font-weight: bold;
-    color: white;
-    text-align: center;
 
+.pointer {
     position: absolute;
-    /* Positioniert den Text weiter vom Zentrum weg */
-    top: 55px; /* Anpassung: Position vom inneren Zentrum */
-    left: 67%; 
-
-    /* Wichtig: Dreht den Text in die Mitte des 45-Grad-Segments */
-    /* translate(-50%) zentriert ihn, rotate(-22.5deg) richtet ihn aus */
-    transform: translate(-50%, -50%) rotate(-22.5deg); 
-
-    /* Setze die Breite und Zeilenhöhe für längeren Text */
-    width: 100px; 
-    line-height: 1.2;
-
-    /* Setze den Z-Index hoch, falls er hinter dem Clip-Path verschwindet */
-    z-index: 2; 
-}
-
-/* --- Zeiger/Pfeil --- */
-.main::before {
-    content: '▼';
-    position: absolute;
-    top: -30px; 
+    top: 17.5%;
     left: 50%;
-    transform: translateX(-50%);
-    font-size: 50px;
-    color: #333;
-    z-index: 9999; /* ganz oben anzeigen */
-    pointer-events: none; /* lässt Klicks durch */
+    transform: translate(-50%, -160%);
+    font-size: 2.3rem;
+    color: #4a90e2aa;
+    text-shadow: 0 0 8px #4a90e2aa;
 }
 
+/*Spin Button Styling */
 
-/* --- Button --- */
-#spin-button {
-    padding: 10px 30px;
-    font-size: 20px;
-    cursor: pointer;
-    color: rgb(248, 243, 243);
-    background: #000000;
+button {
+
+    padding: 1rem 2rem;
+    font-size: 1.3rem;
     border: none;
-    border-radius: 50px;
-    text-align: center;
-    margin-top: 10px;
-    margin-left: 185px; /* Du kannst diesen Wert anpassen */
-    }
+    border-radius: 2rem;
+    background: #4a90e2aa;
+    color: white;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.3s, transform 0.2s;
+    user-select: none;
+    margin-bottom: 1rem;
 
-/* --- Ergebnis-Anzeige --- */
-/* style.css (am Ende hinzufügen) */
+}
+
+button:hover:not(:disabled){
+
+    background: #357ABD;
+    transform: scale(1.05);
+}
+
+button:disabled{
+    background: #a0bde8;
+    cursor: not-allowed;
+}
+/* Result Text */
 
 #result {
-    margin-top: 40px;
-    padding: 15px 30px;
-    font-size: 28px;
-    font-weight: bold;
-    color: #f9f9f9;
-    background-color: #1d1b1b;
-    border: 3px solid #000000;
-    border-radius: 10px;
-    text-align: center;
-    min-width: 300px; /* Stellt sicher, dass die Box groß genug ist */
+
+    font-size: 1.5rem;
+    min-height: 2em;
+    margin-bottom: 1rem;
+    color: #333;
+    transition: opacity 0.5s ease-in-out;
+}
+/* Info section for spins left and total score */
+.info {
+    font-size: 1rem;
+    margin: 0.2rem 0;
+    color: #555;
+}
+/* Big Bonus glow effect on reslut */
+.bonus-glow {
+    color: gold !important;
+    animation: pulseGlow 1.5s ease-in-out infinite;
+    text-shadow: 0 0 10px gold, 0 0 20px orange, 0 0 30px gold;
+}
+/* Bonus glow animation */
+
+@keyframes pulseGlow{
+    0%,
+    100%{
+        text-shadow: 0 0 10px  gold, 0 0 20px orange, 0 0 30px gold;
+        transform: scale(1);
+    }
+    50%{
+        text-shadow: 0 0 30px gold, 0 0 50px orange, 0 0 70px gold;
+        transform: scale(1.3);
+    }
+}
+/* Glow highlight for winning slice */
+
+.bonus-slice{
+    box-shadow: 0 0 15px 5px gold inset, 0 0 30px 10px gold;
+    transition: box-shadow 0.5s ease;
+}
+
+/* Glow effect on spin Button */
+
+.bonus-button-glow{
+    animation: buttonGlow 1.5s ease-in-out 3;
+    background-color: gold !important;
+    color: #111 !important;
+}
+
+@keyframes buttonGlow{
+
+    0%,
+    100%{
+        box-shadow:  0 0 10px gold;
+    }
+    50%{
+        box-shadow: 0 0 25px gold;
+    }
+
+}
+}
+
+/* Standard-Layout für Desktop (nur als Referenz) */
+
+main {
+
+    flex: 1;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center; /* BEHÄLT VERTIKALE ZENTRIERUNG AUF DEM DESKTOP */
+    padding-block: 5rem;
+    min-height: auto; /* Kann hier bleiben */
+
+}
+/* In /Spiele/SpinWheel/spinwheel.css hinzufügen: */
+
+/* Überschreibt die Schriftart für Links und Haupt-Footer-Text */
+
+footer {
+font-family: "Poppins", sans-serif !important;
+}
+.nav__links a,
+footer a {
+    /* Ihre gewünschte Schriftart */
+    font-family: "Poppins", sans-serif !important; 
+}
+/* In /Spiele/SpinWheel/spinwheel.css hinzufügen: */
+
+/* Überschreibt die Schriftart für das Logo */
+.nav__logo a {
+    font-family: 'Bebas Neue', sans-serif !important;
+}
+
+/* Überschreibt die Schriftart für die Anmelde-Buttons */
+.nav__btns .btn {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
+}
+body footer p,
+body footer a {
+    /* Setzt die Schriftart garantiert auf Poppins zurück */
+    font-family: "Poppins", sans-serif !important;
+}
+/* In /Spiele/SpinWheel/spinwheel.css hinzufügen: */
+
+/* 1. Setzt die Farbe des gesamten <a>-Tags (also der Zahl "24") auf die Primärfarbe */
+.nav__logo a {
+    color: var(--primary-color) !important;
+}
+
+/* 2. Setzt die Farbe des <span>-Tags (also "SlotMaster") auf die dunkle Textfarbe */
+.nav__logo a span {
+    color: var(--text-dark) !important;
+}
+@media (width <= 768px) {
+.nav__logo a span {
+    color: var(--white) !important;
+  }
 }
