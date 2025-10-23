@@ -97,13 +97,28 @@ function handleRegistration(username, email, password) {
 function checkLoginStatus() {
     const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
     const currentPage = window.location.pathname;
+    const loginRequiredPage = '/HTML/login-required.html';
+    const isLoginRequiredPage = currentPage === loginRequiredPage;
     
-    // Dashboard + Spiele sind geschützt
+    // Dashboard + Spieleübersicht geschützt
     const protectedPages = ['/HTML/dashboard.html', '/HTML/spiele.html'];
+    const isGamePage = currentPage.startsWith('/Spiele/') && currentPage.endsWith('.html');
     
-    // Wenn auf GESCHÜTZTER Seite und nicht eingeloggt → zur Login-Seite
-    if (protectedPages.includes(currentPage) && !isLoggedIn) {
-        window.location.href = '/HTML/login.html';
+    if (!isLoggedIn) {
+        // Wenn nicht eingeloggt und bereits auf der Hinweis-Seite → Navigation trotzdem aktualisieren
+        if (isLoginRequiredPage) {
+            updateNavigation();
+            return;
+        }
+        if (protectedPages.includes(currentPage) || isGamePage) {
+            window.location.href = loginRequiredPage;
+            return;
+        }
+    }
+    
+    // Wenn Hinweis-Seite aufgerufen aber eingeloggt → zu Spieleübersicht
+    if (isLoggedIn && isLoginRequiredPage) {
+        window.location.href = '/HTML/spiele.html';
         return;
     }
     
