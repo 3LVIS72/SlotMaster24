@@ -6,6 +6,7 @@ window.addEventListener('DOMContentLoaded', function() {
   const navLogin = document.getElementById('nav-login');
   const navRegister = document.getElementById('nav-register');
   const navLogout = document.getElementById('nav-logout');
+  const navCoins = document.getElementById('nav-coins');
 
   if (navHome && isLoggedIn) {
     navHome.textContent = 'Dashboard';
@@ -19,10 +20,12 @@ window.addEventListener('DOMContentLoaded', function() {
     if (navLogin) navLogin.style.display = 'none';
     if (navRegister) navRegister.style.display = 'none';
     if (navLogout) navLogout.style.display = '';
+    if (navCoins) navCoins.style.display = '';
   } else {
     if (navLogin) navLogin.style.display = '';
     if (navRegister) navRegister.style.display = '';
     if (navLogout) navLogout.style.display = 'none';
+    if (navCoins) navCoins.style.display = 'none';
   }
 
   if (navLogout) {

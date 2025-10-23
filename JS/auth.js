@@ -130,16 +130,36 @@ function updateNavigation() {
     
     // Navigation Buttons updaten
     const navBtns = document.querySelector('.nav__btns');
+    // Entferne eventuell verbliebene Text-Knoten mit Begrüßungen (z.B. "Hallo, ...")
+    if (navBtns) {
+        for (const node of Array.from(navBtns.childNodes)) {
+            if (node.nodeType === Node.TEXT_NODE && /Hallo\s*,?/i.test(node.textContent || '')) {
+                navBtns.removeChild(node);
+            }
+        }
+    }
     if (navBtns) {
         if (isLoggedIn) {
-            navBtns.innerHTML = `
-                <span style="color: var(--text-dark); padding: 0.5rem 1rem;">
-                    Hallo, <strong>${userUsername}</strong>
-                </span>
-                <button class="btn sign__in" onclick="handleLogout()">
-                    <i class="ri-logout-box-r-line"></i> Abmelden
-                </button>
-            `;
+            // Wenn bereits ein #nav-coins Element existiert (in den HTML-Dateien), verwende es
+            const existingCoins = document.getElementById('nav-coins');
+            if (existingCoins) {
+                // Leere navBtns und verschiebe das vorhandene coins-Element hinein
+                navBtns.innerHTML = '';
+                navBtns.appendChild(existingCoins);
+                const logoutBtn = document.createElement('button');
+                logoutBtn.className = 'btn sign__in';
+                logoutBtn.onclick = handleLogout;
+                logoutBtn.innerHTML = '<i class="ri-logout-box-r-line"></i> Abmelden';
+                navBtns.appendChild(logoutBtn);
+            } else {
+                // Ansonsten das Coins-Element dynamisch hinzufügen
+                navBtns.innerHTML = `
+                    <span id="nav-coins" class="coins-display" style="display:none;"></span>
+                    <button class="btn sign__in" onclick="handleLogout()">
+                        <i class="ri-logout-box-r-line"></i> Abmelden
+                    </button>
+                `;
+            }
         } else {
             navBtns.innerHTML = `
                 <a href="/HTML/registrierung.html" class="btn sign__up">Registrieren</a>
@@ -150,7 +170,22 @@ function updateNavigation() {
     
     // ✅ AUTOMATISCHE NAVIGATION: Links für eingeloggte/nicht-eingeloggte Benutzer
     updateNavLinks(isLoggedIn);
+
+    // Falls CoinsManager verfügbar ist, sofort die Coin-Anzeige aktualisieren
+    if (typeof CoinsManager !== 'undefined' && CoinsManager.updateCoinsDisplay) {
+        CoinsManager.updateCoinsDisplay();
+    }
 }
+
+// Führe ein zweites Mal aus, wenn das Fenster vollständig geladen ist,
+// damit späte Skripte überschrieben werden (defensive Maßnahme)
+window.addEventListener('load', function() {
+    try {
+        updateNavigation();
+    } catch (e) {
+        // ignore
+    }
+});
 
 // ✅ AUTOMATISCHE NAVIGATION: Links anpassen
 function updateNavLinks(isLoggedIn) {
