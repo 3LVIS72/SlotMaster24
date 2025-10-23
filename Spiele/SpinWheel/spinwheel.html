@@ -7,69 +7,55 @@
       href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="/CSS/global.css"/>
-    <link rel="stylesheet" href="/Spiele/SpinWheel/spinwheel.css"/>
-    <link rel="stylesheet" href="/CSS/coins.css"/>
-    <title>Spinwheel</title>
+    <link rel="stylesheet" href="/CSS/global.css" />
+    <link rel="stylesheet" href="/CSS/coins.css" />
+    <link rel="stylesheet" href="/Spiele/SpinWheel/spinwheel.css" />
+    <title>Spin & Win</title>
   </head>
-  
+
   <body>
     <nav>
       <div class="nav__header">
         <div class="nav__logo">
-          <a href="/HTML/home.html"><span>SlotMaster</span>24</a>
+          <a href="/HTML/home.html">SlotMaster<span>24</span></a>
         </div>
         <div class="nav__menu__btn" id="menu-btn">
           <span><i class="ri-menu-line"></i></span>
-      </div>
+        </div>
       </div>
       <ul class="nav__links" id="nav-links">
-        <li><a href="/HTML/home.html">Home</a></li>
+        <li><a href="/HTML/home.html" id="nav-home">Home</a></li>
         <li><a href="/HTML/spiele.html">Spiele</a></li>
         <li><a href="/HTML/überuns.html">Über uns</a></li>
         <li><a href="/HTML/kontakt.html">Kontakt</a></li>
       </ul>
       <div class="nav__btns">
-        <a href="/HTML/registrierung.html" class="btn sign__up">Registierung</a>
-        <a href="/HTML/login.html" class="btn sign__in">Anmelden</a>
+        <a href="/HTML/registrierung.html" class="btn sign__up" id="nav-register">Registrierung</a>
+        <a href="/HTML/login.html" class="btn sign__in" id="nav-login">Anmelden</a>
         <span id="nav-coins" class="coins-display" style="display:none;"></span>
         <button class="btn sign__out" id="nav-logout" style="display:none;">Abmelden</button>
       </div>
     </nav>
 
-    <main>
-        <h1> Spin & Win!</h1>
-      <div class="container">
-        <div class="modern-border">
-          <canvas id="wheel"></canvas>
-          <div class="pointer">&#9660;</div>
+    <main class="spinwheel">
+      <section class="spinwheel__layout">
+        <h1 class="spinwheel__title">Spin &amp; Win!</h1>
+        <div class="spinwheel__card">
+          <div class="modern-border">
+            <canvas id="wheel"></canvas>
+            <div class="pointer">▼</div>
+          </div>
+          <button id="spinBtn" class="spinwheel__button">Drehen</button>
+          <p id="result" class="spinwheel__result" aria-live="polite"></p>
+          <div class="spinwheel__info">
+            <p>Einsatz pro Dreh: <span>5 Coins</span></p>
+            <p>Session-Gewinn: <span id="score">0</span></p>
+          </div>
         </div>
-        <button id="spinBtn">Drehen</button>
-        <p id="result"></p>
-        <div class="info">
-          <p>Verbleibene Drehungen: <span id="spinsLeft">10</span></p>
-          <p>Gewinn: <span id="score">0</span></p>
-        </div>
-      </div>
+      </section>
     </main>
- 
-    <script src="/JS/coins.js"></script>
-    <script src="spinwheel.js"></script>
-    <script src="/JS/navbar.js"></script>
-    
-    <script>
-        const menuBtn = document.getElementById('menu-btn');
-        const navLinks = document.getElementById('nav-links');
-        
-        if (menuBtn && navLinks) {
-            menuBtn.addEventListener('click', () => {
-                // Fügt die 'open'-Klasse hinzu/entfernt sie, um das Menü ein-/auszublenden (gemäß deinem CSS)
-                navLinks.classList.toggle('open');
-            });
-        }
-    </script>
-  
- <footer>
+
+    <footer>
       <p>&copy; 2025 SlotMaster24 – Alle Rechte vorbehalten</p>
       <p>
         <a href="/HTML/impressum.html">Impressum</a> |
@@ -77,5 +63,41 @@
         <a href="/HTML/kontakt.html">Kontakt</a>
       </p>
     </footer>
+
+    <script src="/JS/coins.js"></script>
+    <script src="spinwheel.js"></script>
+    <script src="/JS/navbar.js"></script>
+    <script>
+      (function () {
+        const menuBtn = document.getElementById('menu-btn');
+        const navLinks = document.getElementById('nav-links');
+        const menuIcon = menuBtn ? menuBtn.querySelector('i') : null;
+
+        if (!menuBtn || !navLinks || !menuIcon) return;
+
+        menuBtn.addEventListener('click', () => {
+          navLinks.classList.toggle('open');
+          const isOpen = navLinks.classList.contains('open');
+          menuIcon.className = isOpen ? 'ri-close-line' : 'ri-menu-line';
+          document.body.style.overflow = isOpen ? 'hidden' : '';
+        });
+
+        navLinks.addEventListener('click', (evt) => {
+          if (evt.target.tagName === 'A') {
+            navLinks.classList.remove('open');
+            menuIcon.className = 'ri-menu-line';
+            document.body.style.overflow = '';
+          }
+        });
+
+        document.addEventListener('click', (evt) => {
+          if (!navLinks.contains(evt.target) && !menuBtn.contains(evt.target)) {
+            navLinks.classList.remove('open');
+            menuIcon.className = 'ri-menu-line';
+            document.body.style.overflow = '';
+          }
+        });
+      })();
+    </script>
   </body>
 </html>
