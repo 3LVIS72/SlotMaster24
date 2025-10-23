@@ -1,90 +1,135 @@
-// script.js
-document.addEventListener('DOMContentLoaded', () => {
-    const wheel = document.querySelector('.wheel');
-    const spinButton = document.getElementById('spin-button');
-    const resultDisplay = document.getElementById('result'); 
+const canvas = document.getElementById("wheel");
+const ctx = canvas.getContext("2d");
+const spinBtn = document.getElementById("spinBtn");
+const result = document.getElementById("result");
+const spinsLeftDisplay = document.getElementById("spinsLeft");
+const scoreDisplay = document.getElementById("score");
 
-    const segmentDegree = 45;
-    const SPIN_DURATION = 8;
-    const EXTRA_SPINS = 10;
-    
-    // Offset damit der Zeiger nicht genau auf der Kante landet
-    const POINTER_OFFSET = 15;
-    
-    const segments = [
-        { number: 1, prize: '100 Coins', isWin: true },
-        { number: 2, prize: 'Niete', isWin: false },
-        { number: 3, prize: '500 Coins', isWin: true },
-        { number: 4, prize: 'Niete', isWin: false },
-        { number: 5, prize: '1000 Coins', isWin: true },
-        { number: 6, prize: 'Niete', isWin: false },
-        { number: 7, prize: '10 Coins', isWin: true },
-        { number: 8, prize: 'Niete', isWin: false }
-    ];
+function resizeCanvas(){
+    canvas.width = 320;
+    canvas.height = 320;
+}
+resizeCanvas();
+window.addEventListener('resize', resizeCanvas);
 
-    spinButton.addEventListener('click', () => {
-        spinButton.disabled = true;
-        resultDisplay.textContent = 'Das Rad dreht sich...'; 
+const prizes = ["100 Coins", "1000 Coins", "Niete", "10 Coins", "Thank You", "Niete"];
+const colors = ["#7C4DFF", "#5E31E6", "#7C4DFF", "#5E31E6", "#7C4DFF", "#5E31E6"];
 
-        // Zufälliges Segment auswählen
-        const targetSegment = Math.floor(Math.random() * 8) + 1;
-        
-        // Winkelberechnung mit Offset
-        const baseAngle = (targetSegment - 1) * segmentDegree + POINTER_OFFSET;
-        const randomization = (Math.random() * 20) - 10;
-        const targetDegree = (360 * EXTRA_SPINS) + baseAngle + randomization;
+let startAngle = 0;
+let spinVelocity = 0;
+let spinning = false;
+const arc = (2 * Math.PI) / prizes.length;
 
-        // Reset und Drehung
-        wheel.style.transition = 'none';
-        wheel.style.transform = 'rotate(0deg)';
-        wheel.offsetHeight;
-        wheel.style.transition = `transform ease-out ${SPIN_DURATION}s`;
-        wheel.style.transform = `rotate(-${targetDegree}deg)`;
+let spinsLeft = 10;
+let totalScore = 0;
+let bonusSliceIndex = -1;
 
-        setTimeout(() => {
-            // Das tatsächliche Gewinnsegment basierend auf dem Endwinkel berechnen
-            const actualWinningSegment = calculateWinningSegment(targetDegree);
-            const winningSegment = segments[actualWinningSegment - 1];
+function drawWheel(){
+    const size = canvas.width / 2;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    for(let i = 0; i < prizes.length; i++){
+        const angle = startAngle + i * arc;
+
+        // Highlight bonus slice if applicable
+        if(i === bonusSliceIndex){
+            ctx.shadowColor = 'gold';
+            ctx.shadowBlur = 20;
+            ctx.fillStyle = '#ffd700'
             
-            if (winningSegment.isWin) {
-                resultDisplay.textContent = `🎉 HERZLICHEN GLÜCKWUNSCH! Du hast ${winningSegment.prize} gewonnen! 🎉`;
-            } else {
-                resultDisplay.textContent = `😕 Leider eine ${winningSegment.prize}. Versuch es nochmal! 😕`;
-            }
-            
-            spinButton.disabled = false;
-            wheel.style.transition = 'none';
-        }, SPIN_DURATION * 1000);
-    });
-
-    // Funktion zur Berechnung des tatsächlichen Gewinnsegments
-    function calculateWinningSegment(totalDegrees) {
-        // totalDegrees ist der absolute Rotationswinkel, den wir dem Rad gegeben haben.
-        // Wir interessieren uns für die Position relativ zum Zeiger (top).
-        // 1) Ermittle den Endwinkel innerhalb einer Umdrehung
-        const endDegree = totalDegrees % 360;
-
-        // 2) Da wir das Rad mit negativer Rotation drehen (wheel.style.transform = `rotate(-${targetDegree}deg)`),
-        //    entspricht ein endDegree von X einer visuellen Rotation von -X Grad.
-        //    Um den Winkel auf dem Rad zu finden, den der Zeiger trifft (0° oben),
-        //    müssen wir diesen invertieren.
-        const visualDegree = (360 - endDegree) % 360;
-
-        // 3) Jetzt berücksichtigt man den POINTER_OFFSET: der Zeiger ist nicht exakt auf 0°,
-        //    sondern wir haben beim Berechnen des Zielwinkels einen Offset benutzt.
-        //    Um das Ergebnis konsistent zu machen, ziehen wir den Pointer-Offset ab.
-        const adjustedDegree = (visualDegree - POINTER_OFFSET + 360) % 360;
-
-        // 4) Berechne das Segment: jedes Segment hat eine Breite von segmentDegree Grad.
-        //    Wir nehmen das Segment, in das der angepasste Winkel fällt.
-        let index = Math.floor(adjustedDegree / segmentDegree); // 0..7
-
-        // 5) Mappe index (0..7) auf Segmentnummer (1..8)
-        const segmentNumber = (index % 8) + 1;
-
-        // Debugging-Info (kann in DevTools geprüft werden)
-        console.log('calculateWinningSegment:', { totalDegrees, endDegree, visualDegree, adjustedDegree, index, segmentNumber });
-
-        return segmentNumber;
+    }else{
+        ctx.shadowBlur = 0;
+        ctx.fillStyle = colors[i];
     }
-});
+    ctx.beginPath();
+    ctx.moveTo(size, size)
+    ctx.arc(size, size, size, angle, angle + arc);
+    ctx.lineTo(size, size);
+    ctx.fill();
+
+    //Reset Shadow for Text
+    ctx.shadowBlur = 0;
+    ctx.save();
+    ctx.fillStyle = i === bonusSliceIndex ? '#333': '#fff';
+    ctx.font = "bold 18px Arial";
+    ctx.translate(
+        size + Math.cos(angle + arc / 2) * (size - 50),
+        size + Math.sin(angle + arc / 2) * (size - 50)
+    );
+    ctx.rotate(angle + arc / 2);
+    ctx.fillText(prizes[i], -ctx.measureText(prizes[i]).width / 2, 0);
+    ctx.restore();
+}
+}
+
+function animateWheel() {
+    if(!spinning) return;
+
+    startAngle += spinVelocity;
+    spinVelocity *= 0.98;
+
+    if(spinVelocity < 0.002){
+        spinning = false;
+        finalizeResult();
+        return;
+    }
+    drawWheel();
+    requestAnimationFrame(animateWheel);
+}
+function finalizeResult(){
+    const degrees = (startAngle * 180 / Math.PI + 90) % 360;
+    const index = Math.floor((360 - degrees) / (360 / prizes.length)) % prizes.length;
+    const prize = prizes[index];
+
+    //Reset Bonus Slice highlight
+    bonusSliceIndex = -1;
+
+    if(prize === "Thank You"){
+        result.classList.remove("bonus-glow");
+        spinBtn.classList.remove("bonus-button-glow");
+        result.innerText = "\u{1F64F} Thank You, Try Again!"
+    }else{
+        result.innerText = `\u{1F389} Du gewinnst ${prize}!`;
+
+        const coinMatch = prize.match(/(\d+) Coins/);
+            if(coinMatch){
+                const wonAmount = parseInt(coinMatch[0]);
+                totalScore += wonAmount;
+    
+        scoreDisplay.innerText = totalScore + "Coins";
+
+        if(wonAmount === 1000){
+            //Add Big Bonus design effects
+            result.classList.add("bonus-glow");
+            spinBtn.classList.add("bonus-button-glow");
+            bonusSliceIndex = index;
+        }else{
+            result.classList.remove("bonus-glow");
+            spinBtn.classList.remove("bonus-button-glow");
+        }
+    }
+}
+    result.style.opacity = 1;
+    result.style.transform = "scale(1.1)";
+    setTimeout(() => {
+        result.style.transform = "scale(1)";
+    }, 300);
+
+    spinsLeft--;
+    spinsLeftDisplay.innerText = spinsLeft;
+
+    if(spinsLeft <= 0){
+        spinBtn.disabled = true;
+        spinBtn.innerText = "No Spins left";
+
+    }
+    drawWheel();
+}
+spinBtn.addEventListener("click", () =>{
+    if(spinning || spinsLeft <= 0) return;
+    result.style.opacity = 0;
+    spinVelocity = Math.random() * 0.3 + 0.25;
+    spinning = true;
+    animateWheel();
+})
+drawWheel();

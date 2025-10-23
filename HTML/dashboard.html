@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css" rel="stylesheet" />
+    <link rel="stylesheet" href="/CSS/global.css"/>
+    <link rel="stylesheet" href="/CSS/dashboard.css" />
+    <link rel="stylesheet" href="/CSS/coins.css" />
+    <title>SlotMaster24 | Dashboard</title>
+</head>
+
+<body>
+    <!-- NavBar -->
+    <nav>
+        <div class="nav__header">
+            <div class="nav__logo">
+                <a href="/HTML/dashboard.html">SlotMaster<span>24</span></a>
+            </div>
+            <div class="nav__menu__btn" id="menu-btn">
+                <span><i class="ri-menu-line"></i></span>
+            </div>
+        </div>
+        <ul class="nav__links" id="nav-links">
+            <li><a href="/HTML/dashboard.html" id="nav-home">Dashboard</a></li>
+            <li><a href="/HTML/spiele.html">Spiele</a></li>
+            <li><a href="/HTML/überuns.html">Über uns</a></li>
+            <li><a href="/HTML/kontakt.html">Kontakt</a></li>
+        </ul>
+        <div class="nav__btns">
+            <a href="/HTML/registrierung.html" class="btn sign__up" id="nav-register">Registrierung</a>
+            <a href="/HTML/login.html" class="btn sign__in" id="nav-login">Anmelden</a>
+            <span id="nav-coins" class="coins-display" style="display:none;"></span>
+            <button class="btn sign__out" id="nav-logout" style="display:none;">Abmelden</button>
+        </div>
+    </nav>
+
+    <!-- Dashboard Hauptinhalt -->
+    <main class="dashboard__container">
+        <!-- Willkommens-Bereich (angepasst: Coins statt Begrüßung) -->
+        <section class="welcome-section">
+            <div class="welcome-content">
+                <h1>Willkommen, <span id="dashboard-username">Spieler</span>!</h1>
+            </div>
+        </section>
+
+        <!-- Konto-Übersicht -->
+        <section class="account-section">
+            <div class="account-card">
+                <div class="account-info">
+                    <h2>Dein Konto</h2>
+                    <div class="balance">
+                        <span class="balance-label">Spielguthaben</span>
+                        <span class="balance-amount" id="balance-coins">-- <i class="ri-coin-line"></i></span>
+                    </div>
+                    <div class="account-details">
+                        <div class="detail-item">
+                            <span class="label">Benutzername:</span>
+                            <span class="value" id="detail-username">-</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="label">E-Mail:</span>
+                            <span class="value" id="detail-email">-</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="label">Mitglied seit:</span>
+                            <span class="value">Heute</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Schnellzugriff auf Spiele -->
+        <section class="quick-play-section">
+            <h2>Schnellstart</h2>
+            <div class="game-grid">
+                <div class="game-card">
+                    <div class="game-icon">🎰</div>
+                    <h3>Slot Machine</h3>
+                    <p>Klassische Slot-Spiele</p>
+                    <a href="/HTML/spiele.html#slots" class="play-btn">Spielen</a>
+                </div>
+                <div class="game-card">
+                    <div class="game-icon">🪜</div>
+                    <h3>Leiter-Spiel</h3>
+                    <p>Spannendes Leiterspiel</p>
+                    <a href="/HTML/spiele.html#leiter" class="play-btn">Spielen</a>
+                </div>
+                <div class="game-card">
+                    <div class="game-icon">🏆</div>
+                    <h3>Highscores</h3>
+                    <p>Deine Bestleistungen</p>
+                    <a href="/HTML/spiele.html#highscores" class="play-btn">Ansehen</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Aktuelle Aktionen -->
+        <section class="promo-section">
+            <h2>Aktuelle Aktionen</h2>
+            <div class="promo-card">
+                <h3>🎁 Täglicher Bonus!</h3>
+                <p>Logge dich täglich ein und erhalte 500 Bonus-Münzen!</p>
+                <button class="claim-btn" onclick="claimDailyBonus()">Bonus abholen</button>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2025 SlotMaster24 – Alle Rechte vorbehalten</p>
+        <p>
+            <a href="/HTML/impressum.html">Impressum</a> |
+            <a href="/HTML/datenschutz.html">Datenschutz</a> |
+            <a href="/HTML/kontakt.html">Kontakt</a>
+        </p>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="/JS/auth.js"></script>
+    <script src="/JS/dashboard.js"></script>
+    <script src="/JS/navbar.js"></script>
+    <script src="/JS/coins.js"></script>
+</body>
+</html>

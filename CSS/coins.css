@@ -1,0 +1,22 @@
+/* Coins Display Styling */
+.coins-display {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem 1rem;
+    margin-right: 0.5rem;
+    background: linear-gradient(135deg, #ffd700 0%, #ffcc00 100%);
+    color: #333;
+    border-radius: 50px;
+    font-weight: bold;
+    font-size: 1rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    line-height: 1;
+}
+
+/* Icon Styling */
+.coins-display i {
+    margin-left: 4px;
+    display: inline-flex;
+    align-items: center;
+}
