@@ -56,3 +56,12 @@
     font-size: 2rem;
   }
 }
+  /* 1. Setzt die Farbe des gesamten <a>-Tags (also der Zahl "24") auf die Primärfarbe */
+  .nav__logo a {
+    color: var(--primary-color) !important;
+  }
+  
+  /* 2. Setzt die Farbe des <span>-Tags (also "SlotMaster") auf die dunkle Textfarbe */
+  .nav__logo a span {
+    color: var(--text-dark) !important;
+  }
