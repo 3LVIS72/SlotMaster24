@@ -1,15 +1,78 @@
-// === Shared Coins (über localStorage) ===
-var COINS_KEY = "sm24:coins";
-function getCoins() {
-  var v = Number(localStorage.getItem(COINS_KEY));
-  if (!Number.isFinite(v) || v < 0) v = 10000;       // Default-Startguthaben
-  return Math.floor(v);
+// === Shared Coins via CoinsManager (Fallback auf lokale Speicherung) ===
+var fallbackCoins = 10000;
+
+function hasCoinsManager() {
+  return typeof CoinsManager !== "undefined";
 }
-function setCoins(n) {
-  n = Math.max(0, Math.floor(n));
-  localStorage.setItem(COINS_KEY, String(n));
-  // eigenes Event für gleiche Seite; 'storage' feuert nur zwischen Tabs
-  window.dispatchEvent(new Event("coinschange"));
+
+function syncFallbackFromManager() {
+  if (hasCoinsManager() && typeof CoinsManager.getCoins === "function") {
+    fallbackCoins = CoinsManager.getCoins();
+  }
+}
+
+function emitFallbackChange() {
+  try {
+    window.dispatchEvent(new CustomEvent("coinschange", { detail: { coins: fallbackCoins } }));
+  } catch (err) {
+    window.dispatchEvent(new Event("coinschange"));
+  }
+}
+
+function getCoins() {
+  if (hasCoinsManager() && typeof CoinsManager.getCoins === "function") {
+    return CoinsManager.getCoins();
+  }
+  return fallbackCoins;
+}
+
+function setCoins(amount) {
+  if (hasCoinsManager() && typeof CoinsManager.setCoins === "function") {
+    CoinsManager.setCoins(amount);
+    return;
+  }
+  fallbackCoins = Math.max(0, Math.floor(amount));
+  emitFallbackChange();
+}
+
+function addCoins(amount) {
+  if (hasCoinsManager() && typeof CoinsManager.addCoins === "function") {
+    CoinsManager.addCoins(amount);
+    return;
+  }
+  fallbackCoins = Math.max(0, fallbackCoins + Math.floor(amount));
+  emitFallbackChange();
+}
+
+function removeCoins(amount) {
+  if (hasCoinsManager() && typeof CoinsManager.removeCoins === "function") {
+    return CoinsManager.removeCoins(amount);
+  }
+  var needed = Math.max(0, Math.floor(amount));
+  if (fallbackCoins >= needed) {
+    fallbackCoins -= needed;
+    emitFallbackChange();
+    return true;
+  }
+  return false;
+}
+
+function hasEnoughCoins(amount) {
+  if (hasCoinsManager() && typeof CoinsManager.hasEnoughCoins === "function") {
+    return CoinsManager.hasEnoughCoins(amount);
+  }
+  return fallbackCoins >= Math.max(0, Math.floor(amount));
+}
+
+function formatCoins(value) {
+  if (hasCoinsManager() && typeof CoinsManager.formatNumber === "function") {
+    return CoinsManager.formatNumber(value);
+  }
+  try {
+    return Number(value).toLocaleString("de-DE");
+  } catch (err) {
+    return String(value);
+  }
 }
 
 // === Hi-Lo Logik ===
@@ -55,15 +118,17 @@ function setStatus(msg, type){
   elStatus.textContent = msg || "";
 }
 function draw(){ if (deck.length===0) deck = makeDeck(); return deck.pop(); }
-function renderCoins(){ elBal.textContent = getCoins().toLocaleString("de-DE"); }
+function renderCoins(){
+  syncFallbackFromManager();
+  elBal.textContent = formatCoins(getCoins());
+}
 
 // Spielrunde
 function play(guess){
   var bet = Math.floor(Number(elBet.value || 0)); // Coins = ganze Zahlen
   if (bet <= 0) { setStatus("Bitte Einsatz eingeben (mind. 1 Coin)."); return; }
 
-  var coins = getCoins();
-  if (bet > coins) { setStatus("Nicht genug Coins.", "lose"); return; }
+  if (!hasEnoughCoins(bet)) { setStatus("Nicht genug Coins.", "lose"); return; }
 
   var prev = current, next = draw();
 
@@ -74,16 +139,20 @@ function play(guess){
     var win = (guess === "higher" && higher) || (guess === "lower" && !higher);
     if (win) {
       var profit = Math.floor(bet * 0.9);      // 1.9x Auszahlung → +0.9x Gewinn
-      setCoins(coins + profit);
+      addCoins(profit);
       setStatus("Gewonnen! +" + profit + " Coins", "win");
     } else {
-      setCoins(coins - bet);
+      if (!removeCoins(bet)) {
+        setStatus("Nicht genug Coins.", "lose");
+        return;
+      }
       setStatus("Leider verloren.", "lose");
     }
   }
 
   current = next;
   renderCard(current);
+  renderCoins();
 }
 
 // Init
@@ -105,6 +174,6 @@ document.querySelectorAll(".chip").forEach(function(btn){
 
 // wenn Coins sich woanders ändern (anderer Tab/Seite), hier live aktualisieren
 window.addEventListener("storage", function(e){
-  if (e.key === COINS_KEY) renderCoins();
+  if (e.key === "userCoins") renderCoins();
 });
 window.addEventListener("coinschange", renderCoins);
