@@ -37,6 +37,15 @@ const CoinsManager = {
         return this.getCoins() >= amount;
     },
 
+    // Formatierung für Anzeige (z.B. 10000 -> "10.000")
+    formatNumber(n) {
+        try {
+            return n.toLocaleString('de-DE');
+        } catch (e) {
+            return String(n);
+        }
+    },
+
     // Coins-Anzeige in der NavBar und auf dem Dashboard aktualisieren
     updateCoinsDisplay() {
         const navCoins = document.getElementById('nav-coins');
@@ -48,8 +57,14 @@ const CoinsManager = {
 
         const dashboardCoins = document.getElementById('dashboard-coins');
         if (dashboardCoins) {
-            dashboardCoins.innerHTML = `${this.getCoins()} <i class="ri-coin-line"></i>`;
+            dashboardCoins.innerHTML = `${this.formatNumber(this.getCoins())} <i class="ri-coin-line"></i>`;
             dashboardCoins.style.display = '';
+        }
+
+        // Balance-Anzeige im Dashboard (Konto-Übersicht)
+        const balanceCoins = document.getElementById('balance-coins');
+        if (balanceCoins) {
+            balanceCoins.innerHTML = `${this.formatNumber(this.getCoins())} <i class="ri-coin-line"></i>`;
         }
     },
 
