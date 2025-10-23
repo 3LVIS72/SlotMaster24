@@ -32,6 +32,7 @@ function randIntInclusive(min, max) {
     target: null,      // Zahl 3..11
     pick: null,        // 'low' | 'high'
     busy: false,
+    played: false,   // wurde in dieser Runde bereits gespielt?
   };
   
   function resetDiceUI() {
@@ -41,6 +42,7 @@ function randIntInclusive(min, max) {
   }
   
   function setPick(p) {
+    if (state.busy || state.played) return; // nach abgeschlossener Runde keine neue Auswahl ohne Neues Spiel
     state.pick = p;
     ui.low.setAttribute('aria-pressed', String(p === 'low'));
     ui.high.setAttribute('aria-pressed', String(p === 'high'));
@@ -53,9 +55,13 @@ function randIntInclusive(min, max) {
   
   function newGame() {
     if (state.busy) return;
+    state.played = false;
     state.target = randIntInclusive(3, 11);
     ui.target.textContent = String(state.target);
     setPick(null);
+    ui.low.disabled = false;
+    ui.high.disabled = false;
+    ui.roll.disabled = false;
     resetDiceUI();
     ui.result.className = 'rtd__result';
     ui.result.innerHTML = 'Zielzahl gesetzt. <b>Wähle Höher oder Niedriger</b> und klicke dann <em>Jetzt würfeln</em>.';
@@ -68,6 +74,11 @@ function randIntInclusive(min, max) {
   }
   
   async function playRound() {
+    if (state.played) {
+      ui.result.className = 'rtd__result';
+      ui.result.textContent = 'Runde beendet. Bitte auf „Neues Spiel“ klicken.';
+      return;
+    }
     if (state.busy) return;
     if (state.target === null) {
       ui.result.className = 'rtd__result';
@@ -126,6 +137,12 @@ function randIntInclusive(min, max) {
       ui.result.className = 'rtd__result rtd__result--lose';
       ui.result.innerHTML = `Verloren. Summe <b>${sum}</b> ${sum>state.target?'>':'&lt;'} Ziel <b>${state.target}</b>`;
     }
+  
+    // Runde ist abgeschlossen – erneut spielen erst nach „Neues Spiel“
+    state.played = true;
+    ui.roll.disabled = true;
+    ui.low.disabled = true;
+    ui.high.disabled = true;
   
     state.busy = false;
   }
