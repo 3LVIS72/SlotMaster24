@@ -20,7 +20,9 @@ function randIntInclusive(min, max) {
     low: document.getElementById('rtd-low'),
     high: document.getElementById('rtd-high'),
     roll: document.getElementById('rtd-roll'),
-    cube: document.getElementById('rtd-cube'),
+    cubeContainer: document.getElementById('rtd-cubes'),
+    cube1: document.getElementById('rtd-cube1'),
+    cube2: document.getElementById('rtd-cube2'),
     result: document.getElementById('rtd-result'),
     d1: document.getElementById('rtd-d1'),
     d2: document.getElementById('rtd-d2'),
@@ -31,8 +33,20 @@ function randIntInclusive(min, max) {
     target: null,      // Zahl 3..11
     pick: null,        // 'low' | 'high'
     busy: false,
+    played: false,   // wurde in dieser Runde bereits gespielt?
     fallbackCoins: 100,
   };
+
+  function setRolling(isOn) {
+    const cubes = [ui.cube1, ui.cube2].filter(Boolean);
+    cubes.forEach((cube) => {
+      cube.classList.toggle('rolling', isOn);
+      if (isOn) cube.textContent = '🎲';
+    });
+    if (ui.cubeContainer) {
+      ui.cubeContainer.classList.toggle('rolling', isOn);
+    }
+  }
 
   function hasCoinsManager() {
     return typeof CoinsManager !== 'undefined';
@@ -67,6 +81,7 @@ function randIntInclusive(min, max) {
   }
   
   function setPick(p) {
+    if (state.busy || state.played) return; // nach abgeschlossener Runde keine neue Auswahl ohne Neues Spiel
     state.pick = p;
     ui.low.setAttribute('aria-pressed', String(p === 'low'));
     ui.high.setAttribute('aria-pressed', String(p === 'high'));
@@ -112,6 +127,10 @@ function randIntInclusive(min, max) {
   
   function newGame() {
     if (state.busy) return;
+    state.played = false;
+    ui.low.disabled = false;
+    ui.high.disabled = false;
+    ui.roll.disabled = false;
     state.target = randIntInclusive(3, 11);
     ui.target.textContent = String(state.target);
     setPick(null);
@@ -127,6 +146,11 @@ function randIntInclusive(min, max) {
   }
   
   async function playRound() {
+    if (state.played) {
+      ui.result.className = 'rtd__result';
+      ui.result.textContent = 'Runde beendet. Bitte auf „Neues Spiel“ klicken.';
+      return;
+    }
     if (state.busy) return;
     if (state.target === null) {
       ui.result.className = 'rtd__result';
@@ -153,7 +177,7 @@ function randIntInclusive(min, max) {
   
     // Animation starten
     state.busy = true;
-    ui.cube.classList.add('rolling');
+    setRolling(true);
     ui.result.className = 'rtd__result';
     ui.result.textContent = 'Würfeln…';
   
@@ -166,7 +190,7 @@ function randIntInclusive(min, max) {
     const sum = d1 + d2;
   
     // Animation stoppen & Ergebnis anzeigen
-    ui.cube.classList.remove('rolling');
+    setRolling(false);
     ui.d1.textContent = dieFace(d1);
     ui.d2.textContent = dieFace(d2);
     ui.sum.textContent = String(sum);
@@ -189,6 +213,13 @@ function randIntInclusive(min, max) {
       ui.result.className = 'rtd__result rtd__result--lose';
       ui.result.innerHTML = `Verloren. Summe <b>${sum}</b> ${sum>state.target?'>':'&lt;'} Ziel <b>${state.target}</b>`;
     }
+    ui.result.innerHTML += '<div class="rtd__hint">→ Bitte zuerst auf <b>„Neues Spiel“</b> klicken, um eine neue Zielzahl zu setzen.</div>';
+  
+    // Runde ist abgeschlossen – erneut spielen erst nach „Neues Spiel“
+    state.played = true;
+    ui.roll.disabled = true;
+    ui.low.disabled = true;
+    ui.high.disabled = true;
   
     state.busy = false;
   }
