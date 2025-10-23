@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="de">
   <head>
-    <meta charset="utf-8" />
+    <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link
       href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css"
@@ -9,10 +9,9 @@
     />
     <link rel="stylesheet" href="/CSS/global.css" />
     <link rel="stylesheet" href="/CSS/coins.css" />
-    <link rel="stylesheet" href="/Spiele/SpinWheel/spinwheel.css" />
-    <title>Spin & Win</title>
+    <link rel="stylesheet" href="/CSS/login-required.css" />
+    <title>SlotMaster24 – Anmeldung erforderlich</title>
   </head>
-
   <body>
     <nav>
       <div class="nav__header">
@@ -37,20 +36,15 @@
       </div>
     </nav>
 
-    <main class="spinwheel">
-      <section class="spinwheel__layout">
-        <h1 class="spinwheel__title">Spin &amp; Win!</h1>
-        <div class="spinwheel__card">
-          <div class="modern-border">
-            <canvas id="wheel"></canvas>
-            <div class="pointer">▼</div>
-          </div>
-          <button id="spinBtn" class="spinwheel__button">Drehen</button>
-          <p id="result" class="spinwheel__result" aria-live="polite"></p>
-          <div class="spinwheel__info">
-            <p>Einsatz pro Dreh: <span>5 Coins</span></p>
-            <p>Session-Gewinn: <span id="score">0</span></p>
-          </div>
+    <main class="login-required">
+      <section class="login-required__card">
+        <h1>Erst anmelden</h1>
+        <p>
+          Bitte melden Sie sich an, damit Sie unsere Spiele spielen können.
+        </p>
+        <div class="login-required__actions">
+          <a href="/HTML/login.html" class="btn sign__in">Jetzt anmelden</a>
+          <a href="/HTML/registrierung.html" class="btn sign__up">Account erstellen</a>
         </div>
       </section>
     </main>
@@ -66,7 +60,6 @@
 
     <script src="/JS/auth.js"></script>
     <script src="/JS/coins.js"></script>
-    <script src="spinwheel.js"></script>
     <script src="/JS/navbar.js"></script>
     <script>
       (function () {
