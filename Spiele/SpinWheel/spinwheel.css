@@ -1,263 +1,201 @@
-/* Reset and Base Style*/
-
-* {
-
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Bebas Neue', sans-serif;
-a {
-
-  text-decoration: none;
-  transition: 0.3s;
-
-}
-
-/* WICHTIG: BODY behält das Layout für Header/Footer bei */
-
+/* Layout */
 body {
-  font-family: "Bebas Neue", sans-serif; /* Aus Header/Footer CSS */
-  background: #ffffff; /* Hintergrundfarbe aus Glücksrad CSS */
-  color: var(--text-dark); /* Aus Header/Footer CSS */
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column; /* Sorgt dafür, dass der Footer unten bleibt */
-  text-align: center; /* Textzentrierung aus Glücksrad CSS beibehalten */
-
-}
-/* WICHTIG: MAIN übernimmt die Zentrierung des Glücksrad-Inhalts */
-main {
-  flex: 2; 
-  width: 50%;
-  
-  /* NEU: Stellt H1 und Container untereinander auf */
-  display: flex;
-  flex-direction: column; 
-  
-  /* ZENTRIERUNG: nur Horizontal */
-  align-items: center; 
-  
-  /* WICHTIG: Entfernt eine feste vertikale Zentrierung, der Inhalt beginnt oben */
-  justify-content: flex-start; 
-  
-  padding-block: 2rem;
-  min-height: auto; 
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background: #ffffff;
+    color: var(--text-dark);
 }
 
-/* Stilisiert den H1-Titel */
-
-
-main {  
-   
-  main h1 {
-  
-    width: 100%; /* Nimmt die volle Breite des Main-Elements ein */
+.spinwheel {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 4rem 1.5rem 5rem;
     text-align: center;
-    padding-top: 2rem; /* Abstand nach oben */
-    margin-bottom: 2rem; /* Abstand zum Rad */
-    max-width: var(--max-width);
-
-    }
-
-
-  /* NEUE ZENTRIERUNG für das Glücksrad */
-
-  display: flex;
-  justify-content: center; /* Horizontale Zentrierung */
-  align-items: center; /* Vertikale Zentrierung (falls genügend Platz ist) */
-  padding-block: 2rem; /* Abstand oben/unten (optional) */
 }
 
-.container {
-    width: 90%;
-    max-width: 400px;
+.spinwheel__layout {
+    width: min(100%, 420px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
 }
 
-/* Modern Subtle border for wheel */
+.spinwheel__title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(2.8rem, 8vw, 3.6rem);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--primary-color);
+}
+
+.spinwheel__card {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.25rem;
+}
 
 .modern-border {
-
     position: relative;
-    display: inline-block;
-    margin-bottom: 1rem;
-    border-radius: 50%;
-    box-shadow: 0 0 8px #4a90e2aa, inset 0 0 15px #4a90e2aa;
-    padding: 12px;
-    background: white;
-
-}
-
-/* Wheel Style */
-
-#wheel {
-    width: 100%;
-    max-width: 320px;
-    height: auto;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
     border-radius: 50%;
     background: #ffffff;
-    box-shadow: 0 0 20px rgba(74, 144, 226, 0.6);
-
+    box-shadow: 0 0 12px rgba(74, 144, 226, 0.35), inset 0 0 18px rgba(74, 144, 226, 0.35);
 }
 
-/* Pointer Styling */
-
-
+#wheel {
+    display: block;
+    width: min(320px, 70vw);
+    height: min(320px, 70vw);
+    border-radius: 50%;
+    background: #ffffff;
+    box-shadow: 0 0 25px rgba(74, 144, 226, 0.45);
+}
 
 .pointer {
     position: absolute;
-    top: 17.5%;
+    top: -12px;
     left: 50%;
-    transform: translate(-50%, -160%);
-    font-size: 2.3rem;
-    color: #4a90e2aa;
-    text-shadow: 0 0 8px #4a90e2aa;
+    transform: translate(-50%, 0);
+    font-size: 2.25rem;
+    color: rgba(74, 144, 226, 0.9);
+    text-shadow: 0 0 8px rgba(74, 144, 226, 0.5);
 }
 
-/*Spin Button Styling */
-
-button {
-
-    padding: 1rem 2rem;
-    font-size: 1.3rem;
+.spinwheel__button {
+    padding: 0.9rem 2.8rem;
+    font-size: 1.2rem;
     border: none;
-    border-radius: 2rem;
-    background: #4a90e2aa;
-    color: white;
-    cursor: pointer;
+    border-radius: 999px;
+    background: linear-gradient(135deg, #4a90e2, #357abd);
+    color: #ffffff;
     font-weight: 600;
-    transition: background-color 0.3s, transform 0.2s;
-    user-select: none;
-    margin-bottom: 1rem;
-
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-button:hover:not(:disabled){
-
-    background: #357ABD;
-    transform: scale(1.05);
+.spinwheel__button:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 24px rgba(53, 122, 189, 0.25);
 }
 
-button:disabled{
+.spinwheel__button:disabled {
     background: #a0bde8;
     cursor: not-allowed;
+    box-shadow: none;
 }
-/* Result Text */
 
-#result {
-
-    font-size: 1.5rem;
-    min-height: 2em;
-    margin-bottom: 1rem;
-    color: #333;
-    transition: opacity 0.5s ease-in-out;
+.spinwheel__result {
+    min-height: 2.2rem;
+    font-size: 1.35rem;
+    color: #333333;
+    transition: opacity 0.35s ease;
 }
-/* Info section for spins left and total score */
-.info {
+
+.spinwheel__info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
     font-size: 1rem;
-    margin: 0.2rem 0;
-    color: #555;
+    color: #555555;
 }
-/* Big Bonus glow effect on reslut */
+
+.spinwheel__info span {
+    font-weight: 600;
+    color: var(--primary-color);
+}
+
 .bonus-glow {
     color: gold !important;
     animation: pulseGlow 1.5s ease-in-out infinite;
     text-shadow: 0 0 10px gold, 0 0 20px orange, 0 0 30px gold;
 }
-/* Bonus glow animation */
 
-@keyframes pulseGlow{
-    0%,
-    100%{
-        text-shadow: 0 0 10px  gold, 0 0 20px orange, 0 0 30px gold;
+.bonus-button-glow {
+    animation: buttonGlow 1.5s ease-in-out 3;
+    background: gold !important;
+    color: #111111 !important;
+}
+
+@keyframes pulseGlow {
+    0%, 100% {
+        text-shadow: 0 0 12px gold, 0 0 25px orange, 0 0 40px gold;
         transform: scale(1);
     }
-    50%{
-        text-shadow: 0 0 30px gold, 0 0 50px orange, 0 0 70px gold;
-        transform: scale(1.3);
+    50% {
+        text-shadow: 0 0 35px gold, 0 0 60px orange, 0 0 85px gold;
+        transform: scale(1.12);
     }
 }
-/* Glow highlight for winning slice */
 
-.bonus-slice{
-    box-shadow: 0 0 15px 5px gold inset, 0 0 30px 10px gold;
-    transition: box-shadow 0.5s ease;
-}
-
-/* Glow effect on spin Button */
-
-.bonus-button-glow{
-    animation: buttonGlow 1.5s ease-in-out 3;
-    background-color: gold !important;
-    color: #111 !important;
-}
-
-@keyframes buttonGlow{
-
-    0%,
-    100%{
-        box-shadow:  0 0 10px gold;
+@keyframes buttonGlow {
+    0%, 100% {
+        box-shadow: 0 0 12px gold;
     }
-    50%{
-        box-shadow: 0 0 25px gold;
+    50% {
+        box-shadow: 0 0 28px gold;
     }
-
 }
-}
-
-/* Standard-Layout für Desktop (nur als Referenz) */
-
-main {
-
-    flex: 1;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center; /* BEHÄLT VERTIKALE ZENTRIERUNG AUF DEM DESKTOP */
-    padding-block: 5rem;
-    min-height: auto; /* Kann hier bleiben */
-
-}
-/* In /Spiele/SpinWheel/spinwheel.css hinzufügen: */
-
-/* Überschreibt die Schriftart für Links und Haupt-Footer-Text */
 
 footer {
-font-family: "Poppins", sans-serif !important;
-}
-.nav__links a,
-footer a {
-    /* Ihre gewünschte Schriftart */
-    font-family: "Poppins", sans-serif !important; 
-}
-/* In /Spiele/SpinWheel/spinwheel.css hinzufügen: */
-
-/* Überschreibt die Schriftart für das Logo */
-.nav__logo a {
-    font-family: 'Bebas Neue', sans-serif !important;
-}
-
-/* Überschreibt die Schriftart für die Anmelde-Buttons */
-.nav__btns .btn {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
-}
-body footer p,
-body footer a {
-    /* Setzt die Schriftart garantiert auf Poppins zurück */
     font-family: "Poppins", sans-serif !important;
 }
-/* In /Spiele/SpinWheel/spinwheel.css hinzufügen: */
 
-/* 1. Setzt die Farbe des gesamten <a>-Tags (also der Zahl "24") auf die Primärfarbe */
+.nav__links a,
+footer a {
+    font-family: "Poppins", sans-serif !important;
+}
+
 .nav__logo a {
+    font-family: 'Bebas Neue', sans-serif !important;
     color: var(--primary-color) !important;
 }
 
-/* 2. Setzt die Farbe des <span>-Tags (also "SlotMaster") auf die dunkle Textfarbe */
 .nav__logo a span {
     color: var(--text-dark) !important;
 }
-@media (width <= 768px) {
-.nav__logo a span {
-    color: var(--white) !important;
-  }
+
+.nav__btns .btn {
+    font-family: 'Poppins', sans-serif !important;
+}
+
+body footer p,
+body footer a {
+    font-family: "Poppins", sans-serif !important;
+}
+
+@media (max-width: 768px) {
+    .spinwheel {
+        padding: 3rem 1.25rem 4rem;
+    }
+
+    .pointer {
+        top: -10px;
+    }
+
+    .spinwheel__button {
+        width: 100%;
+    }
+
+    .nav__logo a span {
+        color: var(--white) !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .spinwheel__title {
+        font-size: 2.4rem;
+    }
+
+    .spinwheel__info {
+        font-size: 0.95rem;
+    }
 }

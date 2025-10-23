@@ -8,6 +8,7 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="/CSS/global.css"/>          <!-- Globale Styles -->
+    <link rel="stylesheet" href="/CSS/coins.css"/>
     <link rel="stylesheet" href="/Spiele/RollTheDice/rollTheDice.css"/>  <!-- Nur für Über-uns-Seite -->
     <title>SlotMaster24 - RollTheDice</title>
   </head>
@@ -28,10 +29,10 @@
         <li><a href="/HTML/kontakt.html">Kontakt</a></li>
       </ul>
       <div class="nav__btns">
-  <a href="registrierung.html" class="btn sign__up" id="nav-register">Registrierung</a>
-  <a href="login.html" class="btn sign__in" id="nav-login">Anmelden</a>
+  <a href="/HTML/registrierung.html" class="btn sign__up" id="nav-register">Registrierung</a>
+  <a href="/HTML/login.html" class="btn sign__in" id="nav-login">Anmelden</a>
+  <span id="nav-coins" class="coins-display" style="display:none;"></span>
   <button class="btn sign__out" id="nav-logout" style="display:none;">Abmelden</button>
-  <script src="/JS/navbar.js"></script>
       </div>
     </nav>
 
@@ -58,10 +59,13 @@
           <button id="rtd-new" class="btn rtd__btn">Neues Spiel</button>
         </div>
       </aside>
-
+      
       <div class="rtd__stage">
-        <!-- Animierter Würfel (zentral) -->
-        <div id="rtd-cube" class="rtd__cube" aria-label="Würfel Animation">🎲</div>
+        <!-- Animierte Würfel (zentral) -->
+        <div id="rtd-cubes" class="rtd__cubes" aria-label="Würfel Animation">
+          <div id="rtd-cube1" class="rtd__cube" aria-hidden="true">🎲</div>
+          <div id="rtd-cube2" class="rtd__cube" aria-hidden="true">🎲</div>
+        </div> 
 
         <!-- Auswahl High/Low -->
         <div class="rtd__choices" role="group" aria-label="Wette auswählen">
@@ -93,12 +97,15 @@
        <!-- Footer -->
        <footer class="footer_ueber_uns">
         <p>&copy; 2025 SlotMaster24 – Alle Rechte vorbehalten</p>
-        <p>
+       <p>
           <a href="/HTML/impressum.html">Impressum</a> |
           <a href="/HTML/datenschutz.html">Datenschutz</a> |
           <a href="/HTML/kontakt.html">Kontakt</a>
         </p>
       </footer>
+      <script src="/JS/auth.js"></script>
+      <script src="/JS/coins.js"></script>
       <script src="/Spiele/RollTheDice/rollTheDice.js" defer></script>
+      <script src="/JS/navbar.js"></script>
     </body>
 </html>
