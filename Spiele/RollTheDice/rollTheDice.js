@@ -48,6 +48,7 @@ function randIntInclusive(min, max) {
   
   function setCoins(c) {
     state.coins = c;
+    CoinsManager.setCoins(c);
     ui.bank.textContent = String(c);
   }
   
