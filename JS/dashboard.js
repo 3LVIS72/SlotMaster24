@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', function() {
 function updateDashboardUserInfo() {
     const username = localStorage.getItem('userUsername');
     const email = localStorage.getItem('userEmail');
-    
+   
     // Benutzerinfo in Dashboard anzeigen
     document.getElementById('dashboard-username').textContent = username || 'Spieler';
     document.getElementById('detail-username').textContent = username || '-';
