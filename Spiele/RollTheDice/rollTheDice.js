@@ -28,11 +28,37 @@ function randIntInclusive(min, max) {
   };
   
   const state = {
-    coins: 100,
     target: null,      // Zahl 3..11
     pick: null,        // 'low' | 'high'
     busy: false,
+    fallbackCoins: 100,
   };
+
+  function hasCoinsManager() {
+    return typeof CoinsManager !== 'undefined';
+  }
+
+  function currentCoins() {
+    if (hasCoinsManager() && typeof CoinsManager.getCoins === 'function') {
+      return CoinsManager.getCoins();
+    }
+    return state.fallbackCoins;
+  }
+
+  function syncFallbackFromManager() {
+    if (hasCoinsManager() && typeof CoinsManager.getCoins === 'function') {
+      state.fallbackCoins = CoinsManager.getCoins();
+    }
+  }
+
+  function emitFallbackChange() {
+    try {
+      const evt = new CustomEvent('coinschange', { detail: { coins: state.fallbackCoins } });
+      window.dispatchEvent(evt);
+    } catch (err) {
+      window.dispatchEvent(new Event('coinschange'));
+    }
+  }
   
   function resetDiceUI() {
     ui.d1.textContent = '–';
@@ -46,10 +72,42 @@ function randIntInclusive(min, max) {
     ui.high.setAttribute('aria-pressed', String(p === 'high'));
   }
   
-  function setCoins(c) {
-    state.coins = c;
-    CoinsManager.setCoins(c);
-    ui.bank.textContent = String(c);
+  function updateBankDisplay() {
+    ui.bank.textContent = String(currentCoins());
+  }
+
+  function hasEnoughCoins(amount) {
+    if (hasCoinsManager() && typeof CoinsManager.hasEnoughCoins === 'function') {
+      return CoinsManager.hasEnoughCoins(amount);
+    }
+    return state.fallbackCoins >= amount;
+  }
+
+  function removeCoins(amount) {
+    if (hasCoinsManager() && typeof CoinsManager.removeCoins === 'function') {
+      const success = CoinsManager.removeCoins(amount);
+      if (!success) return false;
+      updateBankDisplay();
+      return true;
+    }
+    if (state.fallbackCoins >= amount) {
+      state.fallbackCoins -= amount;
+      updateBankDisplay();
+      emitFallbackChange();
+      return true;
+    }
+    return false;
+  }
+
+  function addCoins(amount) {
+    if (hasCoinsManager() && typeof CoinsManager.addCoins === 'function') {
+      CoinsManager.addCoins(amount);
+      updateBankDisplay();
+      return;
+    }
+    state.fallbackCoins += amount;
+    updateBankDisplay();
+    emitFallbackChange();
   }
   
   function newGame() {
@@ -80,14 +138,18 @@ function randIntInclusive(min, max) {
       ui.result.textContent = 'Bitte Höher oder Niedriger auswählen.';
       return;
     }
-    if (state.coins < 5) {
+    if (!hasEnoughCoins(5)) {
       ui.result.className = 'rtd__result';
       ui.result.textContent = 'Nicht genug Coins (5 benötigt).';
       return;
     }
-  
+
     // Einsatz abziehen
-    setCoins(state.coins - 5);
+    if (!removeCoins(5)) {
+      ui.result.className = 'rtd__result';
+      ui.result.textContent = 'Nicht genug Coins (5 benötigt).';
+      return;
+    }
   
     // Animation starten
     state.busy = true;
@@ -116,11 +178,11 @@ function randIntInclusive(min, max) {
     else if (sum === state.target) outcome = 'push';
   
     if (outcome === 'win') {
-      setCoins(state.coins + 10); // Gewinn gutschreiben
+      addCoins(10); // Gewinn gutschreiben
       ui.result.className = 'rtd__result rtd__result--win';
       ui.result.innerHTML = `Gewonnen! Summe <b>${sum}</b> ${state.pick==='high'?'>' : '&lt;'} Ziel <b>${state.target}</b> • +10 Coins`;
     } else if (outcome === 'push') {
-      setCoins(state.coins + 5); // Einsatz zurück
+      addCoins(5); // Einsatz zurück
       ui.result.className = 'rtd__result rtd__result--push';
       ui.result.innerHTML = `Gleichstand! Summe <b>${sum}</b> = Ziel <b>${state.target}</b> • Einsatz zurück`;
     } else {
@@ -133,7 +195,8 @@ function randIntInclusive(min, max) {
   
   function init() {
     // Initial UI
-    setCoins(state.coins);
+    syncFallbackFromManager();
+    updateBankDisplay();
     ui.target.textContent = '–';
     resetDiceUI();
   
@@ -152,5 +215,17 @@ function randIntInclusive(min, max) {
       if (e.key.toLowerCase() === 'n') newGame();
     });
   }
+
+  window.addEventListener('coinschange', () => {
+    syncFallbackFromManager();
+    updateBankDisplay();
+  });
+
+  window.addEventListener('storage', (event) => {
+    if (event.key === 'userCoins') {
+      syncFallbackFromManager();
+      updateBankDisplay();
+    }
+  });
   
   document.addEventListener('DOMContentLoaded', init);

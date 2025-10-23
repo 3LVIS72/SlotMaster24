@@ -5,6 +5,29 @@ const result = document.getElementById("result");
 const spinsLeftDisplay = document.getElementById("spinsLeft");
 const scoreDisplay = document.getElementById("score");
 
+function hasCoinsManager() {
+    return typeof CoinsManager !== "undefined";
+}
+
+function awardCoins(amount) {
+    if (amount <= 0) return;
+    if (hasCoinsManager() && typeof CoinsManager.addCoins === "function") {
+        CoinsManager.addCoins(amount);
+    }
+}
+
+function formatNumber(value) {
+    try {
+        return Number(value).toLocaleString("de-DE");
+    } catch (err) {
+        return String(value);
+    }
+}
+
+function updateScoreDisplay() {
+    scoreDisplay.innerText = formatNumber(totalScore) + " Coins";
+}
+
 function resizeCanvas(){
     canvas.width = 320;
     canvas.height = 320;
@@ -92,18 +115,22 @@ function finalizeResult(){
         result.innerText = `\u{1F389} Du gewinnst ${prize}!`;
 
         const coinMatch = prize.match(/(\d+) Coins/);
-            if(coinMatch){
-                const wonAmount = parseInt(coinMatch[0]);
-                totalScore += wonAmount;
-    
-        scoreDisplay.innerText = totalScore + "Coins";
+        if (coinMatch) {
+            const wonAmount = parseInt(coinMatch[1], 10);
+            totalScore += wonAmount;
+            awardCoins(wonAmount);
+            updateScoreDisplay();
 
-        if(wonAmount === 1000){
-            //Add Big Bonus design effects
-            result.classList.add("bonus-glow");
-            spinBtn.classList.add("bonus-button-glow");
-            bonusSliceIndex = index;
-        }else{
+            if (wonAmount === 1000) {
+                //Add Big Bonus design effects
+                result.classList.add("bonus-glow");
+                spinBtn.classList.add("bonus-button-glow");
+                bonusSliceIndex = index;
+            } else {
+                result.classList.remove("bonus-glow");
+                spinBtn.classList.remove("bonus-button-glow");
+            }
+        } else {
             result.classList.remove("bonus-glow");
             spinBtn.classList.remove("bonus-button-glow");
         }
@@ -132,4 +159,5 @@ spinBtn.addEventListener("click", () =>{
     spinning = true;
     animateWheel();
 })
+updateScoreDisplay();
 drawWheel();

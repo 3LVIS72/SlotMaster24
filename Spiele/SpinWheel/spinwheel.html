@@ -9,6 +9,7 @@
     />
     <link rel="stylesheet" href="/CSS/global.css"/>
     <link rel="stylesheet" href="/Spiele/SpinWheel/spinwheel.css"/>
+    <link rel="stylesheet" href="/CSS/coins.css"/>
     <title>Spinwheel</title>
   </head>
   
@@ -31,6 +32,8 @@
       <div class="nav__btns">
         <a href="/HTML/registrierung.html" class="btn sign__up">Registierung</a>
         <a href="/HTML/login.html" class="btn sign__in">Anmelden</a>
+        <span id="nav-coins" class="coins-display" style="display:none;"></span>
+        <button class="btn sign__out" id="nav-logout" style="display:none;">Abmelden</button>
       </div>
     </nav>
 
@@ -50,7 +53,9 @@
       </div>
     </main>
  
+    <script src="/JS/coins.js"></script>
     <script src="spinwheel.js"></script>
+    <script src="/JS/navbar.js"></script>
     
     <script>
         const menuBtn = document.getElementById('menu-btn');
