@@ -20,7 +20,9 @@ function randIntInclusive(min, max) {
     low: document.getElementById('rtd-low'),
     high: document.getElementById('rtd-high'),
     roll: document.getElementById('rtd-roll'),
-    cube: document.getElementById('rtd-cube'),
+    cubeContainer: document.getElementById('rtd-cubes'),
+    cube1: document.getElementById('rtd-cube1'),
+    cube2: document.getElementById('rtd-cube2'),
     result: document.getElementById('rtd-result'),
     d1: document.getElementById('rtd-d1'),
     d2: document.getElementById('rtd-d2'),
@@ -28,11 +30,49 @@ function randIntInclusive(min, max) {
   };
   
   const state = {
-    coins: 100,
     target: null,      // Zahl 3..11
     pick: null,        // 'low' | 'high'
     busy: false,
+    played: false,   // wurde in dieser Runde bereits gespielt?
+    fallbackCoins: 100,
   };
+
+  function setRolling(isOn) {
+    const cubes = [ui.cube1, ui.cube2].filter(Boolean);
+    cubes.forEach((cube) => {
+      cube.classList.toggle('rolling', isOn);
+      if (isOn) cube.textContent = '🎲';
+    });
+    if (ui.cubeContainer) {
+      ui.cubeContainer.classList.toggle('rolling', isOn);
+    }
+  }
+
+  function hasCoinsManager() {
+    return typeof CoinsManager !== 'undefined';
+  }
+
+  function currentCoins() {
+    if (hasCoinsManager() && typeof CoinsManager.getCoins === 'function') {
+      return CoinsManager.getCoins();
+    }
+    return state.fallbackCoins;
+  }
+
+  function syncFallbackFromManager() {
+    if (hasCoinsManager() && typeof CoinsManager.getCoins === 'function') {
+      state.fallbackCoins = CoinsManager.getCoins();
+    }
+  }
+
+  function emitFallbackChange() {
+    try {
+      const evt = new CustomEvent('coinschange', { detail: { coins: state.fallbackCoins } });
+      window.dispatchEvent(evt);
+    } catch (err) {
+      window.dispatchEvent(new Event('coinschange'));
+    }
+  }
   
   function resetDiceUI() {
     ui.d1.textContent = '–';
@@ -41,19 +81,56 @@ function randIntInclusive(min, max) {
   }
   
   function setPick(p) {
+    if (state.busy || state.played) return; // nach abgeschlossener Runde keine neue Auswahl ohne Neues Spiel
     state.pick = p;
     ui.low.setAttribute('aria-pressed', String(p === 'low'));
     ui.high.setAttribute('aria-pressed', String(p === 'high'));
   }
   
-  function setCoins(c) {
-    state.coins = c;
-    CoinsManager.setCoins(c);
-    ui.bank.textContent = String(c);
+  function updateBankDisplay() {
+    ui.bank.textContent = String(currentCoins());
+  }
+
+  function hasEnoughCoins(amount) {
+    if (hasCoinsManager() && typeof CoinsManager.hasEnoughCoins === 'function') {
+      return CoinsManager.hasEnoughCoins(amount);
+    }
+    return state.fallbackCoins >= amount;
+  }
+
+  function removeCoins(amount) {
+    if (hasCoinsManager() && typeof CoinsManager.removeCoins === 'function') {
+      const success = CoinsManager.removeCoins(amount);
+      if (!success) return false;
+      updateBankDisplay();
+      return true;
+    }
+    if (state.fallbackCoins >= amount) {
+      state.fallbackCoins -= amount;
+      updateBankDisplay();
+      emitFallbackChange();
+      return true;
+    }
+    return false;
+  }
+
+  function addCoins(amount) {
+    if (hasCoinsManager() && typeof CoinsManager.addCoins === 'function') {
+      CoinsManager.addCoins(amount);
+      updateBankDisplay();
+      return;
+    }
+    state.fallbackCoins += amount;
+    updateBankDisplay();
+    emitFallbackChange();
   }
   
   function newGame() {
     if (state.busy) return;
+    state.played = false;
+    ui.low.disabled = false;
+    ui.high.disabled = false;
+    ui.roll.disabled = false;
     state.target = randIntInclusive(3, 11);
     ui.target.textContent = String(state.target);
     setPick(null);
@@ -69,6 +146,11 @@ function randIntInclusive(min, max) {
   }
   
   async function playRound() {
+    if (state.played) {
+      ui.result.className = 'rtd__result';
+      ui.result.textContent = 'Runde beendet. Bitte auf „Neues Spiel“ klicken.';
+      return;
+    }
     if (state.busy) return;
     if (state.target === null) {
       ui.result.className = 'rtd__result';
@@ -80,18 +162,22 @@ function randIntInclusive(min, max) {
       ui.result.textContent = 'Bitte Höher oder Niedriger auswählen.';
       return;
     }
-    if (state.coins < 5) {
+    if (!hasEnoughCoins(5)) {
+      ui.result.className = 'rtd__result';
+      ui.result.textContent = 'Nicht genug Coins (5 benötigt).';
+      return;
+    }
+
+    // Einsatz abziehen
+    if (!removeCoins(5)) {
       ui.result.className = 'rtd__result';
       ui.result.textContent = 'Nicht genug Coins (5 benötigt).';
       return;
     }
   
-    // Einsatz abziehen
-    setCoins(state.coins - 5);
-  
     // Animation starten
     state.busy = true;
-    ui.cube.classList.add('rolling');
+    setRolling(true);
     ui.result.className = 'rtd__result';
     ui.result.textContent = 'Würfeln…';
   
@@ -104,7 +190,7 @@ function randIntInclusive(min, max) {
     const sum = d1 + d2;
   
     // Animation stoppen & Ergebnis anzeigen
-    ui.cube.classList.remove('rolling');
+    setRolling(false);
     ui.d1.textContent = dieFace(d1);
     ui.d2.textContent = dieFace(d2);
     ui.sum.textContent = String(sum);
@@ -116,24 +202,32 @@ function randIntInclusive(min, max) {
     else if (sum === state.target) outcome = 'push';
   
     if (outcome === 'win') {
-      setCoins(state.coins + 10); // Gewinn gutschreiben
+      addCoins(10); // Gewinn gutschreiben
       ui.result.className = 'rtd__result rtd__result--win';
       ui.result.innerHTML = `Gewonnen! Summe <b>${sum}</b> ${state.pick==='high'?'>' : '&lt;'} Ziel <b>${state.target}</b> • +10 Coins`;
     } else if (outcome === 'push') {
-      setCoins(state.coins + 5); // Einsatz zurück
+      addCoins(5); // Einsatz zurück
       ui.result.className = 'rtd__result rtd__result--push';
       ui.result.innerHTML = `Gleichstand! Summe <b>${sum}</b> = Ziel <b>${state.target}</b> • Einsatz zurück`;
     } else {
       ui.result.className = 'rtd__result rtd__result--lose';
       ui.result.innerHTML = `Verloren. Summe <b>${sum}</b> ${sum>state.target?'>':'&lt;'} Ziel <b>${state.target}</b>`;
     }
+    ui.result.innerHTML += '<div class="rtd__hint">→ Bitte zuerst auf <b>„Neues Spiel“</b> klicken, um eine neue Zielzahl zu setzen.</div>';
+  
+    // Runde ist abgeschlossen – erneut spielen erst nach „Neues Spiel“
+    state.played = true;
+    ui.roll.disabled = true;
+    ui.low.disabled = true;
+    ui.high.disabled = true;
   
     state.busy = false;
   }
   
   function init() {
     // Initial UI
-    setCoins(state.coins);
+    syncFallbackFromManager();
+    updateBankDisplay();
     ui.target.textContent = '–';
     resetDiceUI();
   
@@ -152,5 +246,17 @@ function randIntInclusive(min, max) {
       if (e.key.toLowerCase() === 'n') newGame();
     });
   }
+
+  window.addEventListener('coinschange', () => {
+    syncFallbackFromManager();
+    updateBankDisplay();
+  });
+
+  window.addEventListener('storage', (event) => {
+    if (event.key === 'userCoins') {
+      syncFallbackFromManager();
+      updateBankDisplay();
+    }
+  });
   
   document.addEventListener('DOMContentLoaded', init);

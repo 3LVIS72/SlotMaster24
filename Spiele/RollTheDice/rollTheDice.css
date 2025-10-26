@@ -73,10 +73,19 @@
     text-align: center;
   }
   
-  /* Animierter "Würfel" (zentral) */
+  .rtd__cubes {
+    display: flex;
+    gap: 1.25rem;
+    align-items: center;
+    justify-content: center;
+  }
+  
+   /* Animierter Würfel */
   .rtd__cube {
-    width: 140px; height: 140px;
-    display: grid; place-items: center;
+    width: 120px;
+    height: 120px;
+    display: grid;
+    place-items: center;
     font-size: 72px;
     border-radius: 18px;
     background: #f5f7ff;
@@ -90,7 +99,7 @@
     30%  { transform: rotate(90deg) scale(0.98); }
     60%  { transform: rotate(180deg) scale(1.02); }
     100% { transform: rotate(360deg) scale(1); }
-  }
+  } 
   
   /* Auswahlbuttons */
   .rtd__choices {

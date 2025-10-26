@@ -13,6 +13,7 @@ const CoinsManager = {
     setCoins(amount) {
         localStorage.setItem('userCoins', amount.toString());
         this.updateCoinsDisplay();
+        this._emitCoinsChange(amount);
     },
 
     // Coins hinzufügen (bei Gewinn)
@@ -73,6 +74,17 @@ const CoinsManager = {
         if (!localStorage.getItem('userCoins')) {
             this.setCoins(this.INITIAL_COINS);
         }
+    },
+    _emitCoinsChange(amount) {
+        try {
+            const event = new CustomEvent('coinschange', {
+                detail: { coins: amount }
+            });
+            window.dispatchEvent(event);
+        } catch (e) {
+            // Fallback für Browser ohne CustomEvent-Unterstützung
+            window.dispatchEvent(new Event('coinschange'));
+        }
     }
 };
 
@@ -82,5 +94,14 @@ document.addEventListener('DOMContentLoaded', () => {
     if (isLoggedIn) {
         CoinsManager.initializeNewPlayer();
         CoinsManager.updateCoinsDisplay();
+    }
+});
+
+// Synchronisation, wenn Coins in anderem Tab/Fenster geändert werden
+window.addEventListener('storage', (event) => {
+    if (event.key === 'userCoins') {
+        CoinsManager.updateCoinsDisplay();
+        const value = event.newValue ? parseInt(event.newValue, 10) : CoinsManager.getCoins();
+        CoinsManager._emitCoinsChange(Number.isNaN(value) ? CoinsManager.getCoins() : value);
     }
 });
