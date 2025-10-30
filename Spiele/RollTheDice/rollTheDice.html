@@ -35,7 +35,11 @@
   <button class="btn sign__out" id="nav-logout" style="display:none;">Abmelden</button>
       </div>
     </nav>
-
+    <div class="rtd__back">
+      <button type="button" class="back-btn" onclick="window.location.href='/HTML/spiele.html'" title="Zurück zu Spiele">
+        <i class="ri-arrow-left-fill"></i> Zurück
+      </button>
+    </div>
     <!-- nav__header -->
 <main>
   <!-- === RollTheDice Game === -->
@@ -75,7 +79,7 @@
 
         <!-- Start -->
         <div class="rtd__play">
-          <button id="rtd-roll" class="btn rtd__btn primary">Jetzt würfeln</button>
+          <button id="rtd-roll" class="btn rtd__btn primary" disabled>Jetzt würfeln</button>
         </div>
 
         <!-- Ergebnisanzeige -->
