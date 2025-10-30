@@ -230,7 +230,8 @@ function randIntInclusive(min, max) {
     updateBankDisplay();
     ui.target.textContent = '–';
     resetDiceUI();
-  
+    ui.roll.disabled = true;
+
     // Events
     ui.newGame.addEventListener('click', newGame);
     ui.low.addEventListener('click', () => setPick('low'));
