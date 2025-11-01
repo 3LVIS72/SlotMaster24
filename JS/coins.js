@@ -2,6 +2,8 @@
 const CoinsManager = {
     // Startwert für neue Spieler
     INITIAL_COINS: 1000,
+    STATS_WON_KEY: 'coinsWonTotal',
+    STATS_SPENT_KEY: 'coinsSpentTotal',
 
     // Coins des aktuellen Spielers abrufen
     getCoins() {
@@ -17,17 +19,27 @@ const CoinsManager = {
     },
 
     // Coins hinzufügen (bei Gewinn)
-    addCoins(amount) {
+    addCoins(amount, source = 'general') {
         const currentCoins = this.getCoins();
         this.setCoins(currentCoins + amount);
+        if (source === 'game') {
+            const totalWon = this._getNumber(localStorage.getItem(this.STATS_WON_KEY));
+            localStorage.setItem(this.STATS_WON_KEY, String(totalWon + amount));
+            this._emitStatsChange();
+        }
         return this.getCoins();
     },
 
     // Coins abziehen (bei Verlust/Einsatz)
-    removeCoins(amount) {
+    removeCoins(amount, source = 'general') {
         const currentCoins = this.getCoins();
         if (currentCoins >= amount) {
             this.setCoins(currentCoins - amount);
+            if (source === 'game') {
+                const totalSpent = this._getNumber(localStorage.getItem(this.STATS_SPENT_KEY));
+                localStorage.setItem(this.STATS_SPENT_KEY, String(totalSpent + amount));
+                this._emitStatsChange();
+            }
             return true;
         }
         return false; // Nicht genug Coins
@@ -74,6 +86,18 @@ const CoinsManager = {
         if (!localStorage.getItem('userCoins')) {
             this.setCoins(this.INITIAL_COINS);
         }
+        if (localStorage.getItem(this.STATS_WON_KEY) === null) {
+            localStorage.setItem(this.STATS_WON_KEY, '0');
+        }
+        if (localStorage.getItem(this.STATS_SPENT_KEY) === null) {
+            localStorage.setItem(this.STATS_SPENT_KEY, '0');
+        }
+    },
+    getTotalWon() {
+        return this._getNumber(localStorage.getItem(this.STATS_WON_KEY));
+    },
+    getTotalSpent() {
+        return this._getNumber(localStorage.getItem(this.STATS_SPENT_KEY));
     },
     _emitCoinsChange(amount) {
         try {
@@ -85,6 +109,15 @@ const CoinsManager = {
             // Fallback für Browser ohne CustomEvent-Unterstützung
             window.dispatchEvent(new Event('coinschange'));
         }
+    },
+    _emitStatsChange() {
+        try {
+            window.dispatchEvent(new Event('statschange'));
+        } catch (e) {}
+    },
+    _getNumber(v) {
+        const n = v ? parseInt(v, 10) : 0;
+        return Number.isNaN(n) ? 0 : n;
     }
 };
 
@@ -103,5 +136,8 @@ window.addEventListener('storage', (event) => {
         CoinsManager.updateCoinsDisplay();
         const value = event.newValue ? parseInt(event.newValue, 10) : CoinsManager.getCoins();
         CoinsManager._emitCoinsChange(Number.isNaN(value) ? CoinsManager.getCoins() : value);
+    }
+    if (event.key === CoinsManager.STATS_WON_KEY || event.key === CoinsManager.STATS_SPENT_KEY) {
+        CoinsManager._emitStatsChange();
     }
 });

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css" rel="stylesheet"/>
+  <link rel="stylesheet" href="/CSS/global.css" />
+  <link rel="stylesheet" href="/CSS/coins.css" />
+  <title>Coins auszahlen – SlotMaster24</title>
+</head>
+<body>
+  <nav>
+    <div class="nav__header">
+      <div class="nav__logo">
+        <a href="/HTML/dashboard.html">SlotMaster<span>24</span></a>
+      </div>
+      <div class="nav__menu__btn" id="menu-btn">
+        <span><i class="ri-menu-line"></i></span>
+      </div>
+    </div>
+    <ul class="nav__links" id="nav-links">
+      <li><a href="/HTML/dashboard.html">Dashboard</a></li>
+      <li><a href="/HTML/spiele.html">Spiele</a></li>
+      <li><a href="/HTML/überuns.html">Über uns</a></li>
+      <li><a href="/HTML/kontakt.html">Kontakt</a></li>
+    </ul>
+    <div class="nav__btns">
+      <span id="nav-coins" class="coins-display" style="display:none;"></span>
+      <a href="/HTML/login.html" class="btn sign__in" id="nav-login">Anmelden</a>
+      <button class="btn sign__out" id="nav-logout" style="display:none;">Abmelden</button>
+    </div>
+  </nav>
+
+  <main class="coins-cashout">
+    <div class="cashout-toolbar">
+      <a class="back-link" href="/HTML/dashboard.html"><i class="ri-arrow-left-line"></i> Zurück zum Dashboard</a>
+    </div>
+    <section class="cashout-hero">
+      <h1>Coins auszahlen</h1>
+      <p>Ab 100 Coins kannst du eine Auszahlung beantragen. Dieser Ablauf ist in der Demo simuliert.</p>
+    </section>
+
+    <section class="cashout-content">
+      <article class="cashout-card">
+        <form id="cashout-form" class="cashout-form">
+          <div class="field-grid">
+            <label>
+              Betrag (min. 100 Coins)
+              <input type="number" id="cashout-amount" min="100" step="100" value="100">
+            </label>
+            <label>
+              IBAN
+              <input type="text" id="cashout-iban" placeholder="DE00 0000 0000 0000 0000 00">
+            </label>
+          </div>
+          <div class="field-grid">
+            <label>
+              Kontoinhaber
+              <input type="text" id="cashout-name" placeholder="Max Mustermann">
+            </label>
+            <label>
+              Verwendungszweck (optional)
+              <input type="text" id="cashout-ref" placeholder="Auszahlung SlotMaster24">
+            </label>
+          </div>
+          <div class="actions">
+            <button type="submit" class="cashout-btn"><i class="ri-bank-card-line"></i> Auszahlung beantragen</button>
+          </div>
+          <p class="cashout-hint"><i class="ri-shield-check-line"></i> Für echte Auszahlungen sind KYC/Compliance und ein Zahlungsanbieter notwendig.</p>
+        </form>
+      </article>
+
+      <article class="cashout-card">
+        <h2>Deine Auszahlungsanfragen</h2>
+        <div id="cashout-entries" class="cashout-history"></div>
+      </article>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 SlotMaster24 – Alle Rechte vorbehalten</p>
+    <p>
+      <a href="/HTML/impressum.html">Impressum</a> |
+      <a href="/HTML/datenschutz.html">Datenschutz</a> |
+      <a href="/HTML/kontakt.html">Kontakt</a>
+    </p>
+  </footer>
+
+  <script src="/JS/auth.js"></script>
+  <script src="/JS/navbar.js"></script>
+  <script src="/JS/coins.js"></script>
+  <script src="/JS/coins-payout.js"></script>
+</body>
+</html>
