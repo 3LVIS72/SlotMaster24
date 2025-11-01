@@ -30,7 +30,7 @@ document.addEventListener("DOMContentLoaded", () => {
     function awardCoins(amount) {
         if (amount <= 0) return;
         if (hasCoinsManager() && typeof CoinsManager.addCoins === "function") {
-            CoinsManager.addCoins(amount);
+            CoinsManager.addCoins(amount, 'game');
         }
     }
 
@@ -43,7 +43,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function removeCoins(amount) {
         if (hasCoinsManager() && typeof CoinsManager.removeCoins === "function") {
-            return CoinsManager.removeCoins(amount);
+            return CoinsManager.removeCoins(amount, 'game');
         }
         return true;
     }
