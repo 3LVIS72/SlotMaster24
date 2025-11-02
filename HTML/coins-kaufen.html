@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css" rel="stylesheet"/>
+  <link rel="stylesheet" href="/CSS/global.css" />
+  <link rel="stylesheet" href="/CSS/coins.css" />
+  <title>Coins kaufen – SlotMaster24</title>
+</head>
+<body>
+  <nav>
+    <div class="nav__header">
+      <div class="nav__logo">
+        <a href="/HTML/dashboard.html">SlotMaster<span>24</span></a>
+      </div>
+      <div class="nav__menu__btn" id="menu-btn">
+        <span><i class="ri-menu-line"></i></span>
+      </div>
+    </div>
+    <ul class="nav__links" id="nav-links">
+      <li><a href="/HTML/dashboard.html">Dashboard</a></li>
+      <li><a href="/HTML/spiele.html">Spiele</a></li>
+      <li><a href="/HTML/überuns.html">Über uns</a></li>
+      <li><a href="/HTML/kontakt.html">Kontakt</a></li>
+    </ul>
+    <div class="nav__btns">
+      <span id="nav-coins" class="coins-display" style="display:none;"></span>
+      <a href="/HTML/login.html" class="btn sign__in" id="nav-login">Anmelden</a>
+      <button class="btn sign__out" id="nav-logout" style="display:none;">Abmelden</button>
+    </div>
+  </nav>
+
+  <main class="coins-store">
+    <div class="store-toolbar">
+      <a class="back-link" href="/HTML/dashboard.html"><i class="ri-arrow-left-line"></i> Zurück zum Dashboard</a>
+    </div>
+    <section class="store-hero">
+      <h1>Coins kaufen</h1>
+      <p>Wähle ein Paket und bezahle sicher – in dieser Demo simuliert.</p>
+    </section>
+
+    <section class="packs">
+      <div class="packs-grid">
+        <article class="pack-card" data-coins="1000" data-price="1.99">
+          <header class="pack-header">
+            <div class="pack-icon">💰</div>
+            <h3 class="pack-coins">1.000 Coins</h3>
+            <div class="pack-price">1,99 €</div>
+          </header>
+          <ul class="pack-features">
+            <li><i class="ri-check-line"></i> Sofortige Gutschrift</li>
+            <li><i class="ri-check-line"></i> Perfekt zum Testen</li>
+          </ul>
+          <button type="button" class="buy-btn" data-buy><i class="ri-shopping-cart-2-line"></i> Jetzt kaufen</button>
+        </article>
+
+        <article class="pack-card" data-coins="5000" data-price="8.99">
+          <header class="pack-header">
+            <div class="pack-icon">🪙</div>
+            <h3 class="pack-coins">5.000 Coins</h3>
+            <div class="pack-price">8,99 €</div>
+            <span class="pack-badge">Beliebt</span>
+          </header>
+          <ul class="pack-features">
+            <li><i class="ri-check-line"></i> Top Preis-Leistung</li>
+            <li><i class="ri-check-line"></i> Mehr Spielspaß</li>
+          </ul>
+          <button type="button" class="buy-btn" data-buy><i class="ri-shopping-cart-2-line"></i> Jetzt kaufen</button>
+        </article>
+
+        <article class="pack-card" data-coins="12000" data-price="19.99">
+          <header class="pack-header">
+            <div class="pack-icon">💎</div>
+            <h3 class="pack-coins">12.000 Coins</h3>
+            <div class="pack-price">19,99 €</div>
+          </header>
+          <ul class="pack-features">
+            <li><i class="ri-check-line"></i> Bonus enthalten</li>
+            <li><i class="ri-check-line"></i> Für Vielspieler</li>
+          </ul>
+          <button type="button" class="buy-btn" data-buy><i class="ri-shopping-cart-2-line"></i> Jetzt kaufen</button>
+        </article>
+
+        <article class="pack-card pack-card--highlight" data-coins="25000" data-price="39.99">
+          <header class="pack-header">
+            <div class="pack-icon">👑</div>
+            <h3 class="pack-coins">25.000 Coins</h3>
+            <div class="pack-price">39,99 €</div>
+            <span class="pack-badge">Bestes Angebot</span>
+          </header>
+          <ul class="pack-features">
+            <li><i class="ri-check-line"></i> Maximale Ersparnis</li>
+            <li><i class="ri-check-line"></i> Für Pros</li>
+          </ul>
+          <button type="button" class="buy-btn" data-buy><i class="ri-shopping-cart-2-line"></i> Jetzt kaufen</button>
+        </article>
+      </div>
+    </section>
+
+    <section class="store-note">
+      <p><i class="ri-shield-check-line"></i> Hinweis: Für eine echte Integration (z.B. PayPal) sind Backend-Endpunkte und API-Credentials erforderlich. Diese Seite simuliert den Ablauf.</p>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 SlotMaster24 – Alle Rechte vorbehalten</p>
+    <p>
+      <a href="/HTML/impressum.html">Impressum</a> |
+      <a href="/HTML/datenschutz.html">Datenschutz</a> |
+      <a href="/HTML/kontakt.html">Kontakt</a>
+    </p>
+  </footer>
+
+  <script src="/JS/auth.js"></script>
+  <script src="/JS/navbar.js"></script>
+  <script src="/JS/coins.js"></script>
+  <script src="/JS/coins-purchase.js"></script>
+</body>
+</html>

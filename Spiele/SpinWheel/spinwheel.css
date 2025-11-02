@@ -156,11 +156,11 @@ footer a {
 
 .nav__logo a {
     font-family: 'Bebas Neue', sans-serif !important;
-    color: var(--primary-color) !important;
+    color: var(--text-dark) !important;
 }
 
 .nav__logo a span {
-    color: var(--text-dark) !important;
+    color: var(--primary-color) !important;
 }
 
 .nav__btns .btn {

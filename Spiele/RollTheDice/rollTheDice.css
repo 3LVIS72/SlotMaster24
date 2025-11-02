@@ -1,6 +1,32 @@
 /* RollTheDice – Page Styles */
 /* nutzt Variablen aus global.css: --primary-color, --text-dark, --text-light, --white */
 
+.rtd__back {
+    max-width: var(--max-width);
+    margin: 1.5rem auto 0;
+    padding: 0 1rem;
+    display: flex;
+    justify-content: flex-start;
+  }
+
+  .back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    background: #7C4DFF;
+    color: #fff;
+    border: none;
+    border-radius: 50px;
+    padding: 0.6rem 1.6rem;
+    font-size: 1rem;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    transition: transform .06s ease, background .2s ease;
+  }
+
+  .back-btn:hover { background: #6b3fee; }
+  .back-btn:active { transform: translateY(1px); }
+
 .rtd {
     width: 100%;
     display: grid;
@@ -61,6 +87,22 @@
   .rtd__btn:active { transform: translateY(1px); }
   .rtd__btn.primary { background: var(--primary-color); color: #fff; border-color: transparent; }
   .rtd__btn.primary:hover { background: var(--primary-color-dark); }
+  .rtd__btn:disabled {
+    background: #e1e1e1;
+    color: #8b8b8b;
+    border-color: rgba(0,0,0,0.08);
+    cursor: not-allowed;
+    transform: none;
+    opacity: 0.85;
+  }
+  .rtd__btn.primary:disabled {
+    background: #d3d3d3;
+    color: #6f6f6f;
+  }
+  .rtd__btn:disabled:hover,
+  .rtd__btn:disabled:active {
+    background: #e1e1e1;
+  }
   
   .rtd__stage {
     background: var(--white);
