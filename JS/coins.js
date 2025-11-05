@@ -4,11 +4,23 @@ const CoinsManager = {
     INITIAL_COINS: 1000,
     STATS_WON_KEY: 'coinsWonTotal',
     STATS_SPENT_KEY: 'coinsSpentTotal',
+    WITHDRAWABLE_KEY: 'withdrawableCoins',
 
-    // Coins des aktuellen Spielers abrufen
+    // Spielguthaben (Gesamt-Coins)
     getCoins() {
         const coins = localStorage.getItem('userCoins');
         return coins ? parseInt(coins) : this.INITIAL_COINS;
+    },
+
+    // Auszahlbares Guthaben (nur gewonnene Coins)
+    getWithdrawableCoins() {
+        const withdrawable = localStorage.getItem(this.WITHDRAWABLE_KEY);
+        return withdrawable ? parseInt(withdrawable) : 0;
+    },
+
+    setWithdrawableCoins(amount) {
+        localStorage.setItem(this.WITHDRAWABLE_KEY, amount.toString());
+        this._emitCoinsChange(this.getCoins());
     },
 
     // Coins setzen (z.B. bei Spielstart oder nach Login)
@@ -22,9 +34,15 @@ const CoinsManager = {
     addCoins(amount, source = 'general') {
         const currentCoins = this.getCoins();
         this.setCoins(currentCoins + amount);
+        
+        // Bei Spielgewinnen: auch auszahlbares Guthaben erhöhen
         if (source === 'game') {
             const totalWon = this._getNumber(localStorage.getItem(this.STATS_WON_KEY));
             localStorage.setItem(this.STATS_WON_KEY, String(totalWon + amount));
+            
+            const currentWithdrawable = this.getWithdrawableCoins();
+            this.setWithdrawableCoins(currentWithdrawable + amount);
+            
             this._emitStatsChange();
         }
         return this.getCoins();
@@ -74,10 +92,16 @@ const CoinsManager = {
             dashboardCoins.style.display = '';
         }
 
-        // Balance-Anzeige im Dashboard (Konto-Übersicht)
+        // Balance-Anzeige im Dashboard (Konto-Übersicht) - Spielguthaben
         const balanceCoins = document.getElementById('balance-coins');
         if (balanceCoins) {
             balanceCoins.innerHTML = `${this.formatNumber(this.getCoins())} <i class="ri-coin-line"></i>`;
+        }
+
+        // Auszahlbares Guthaben
+        const withdrawableCoins = document.getElementById('withdrawable-coins');
+        if (withdrawableCoins) {
+            withdrawableCoins.innerHTML = `${this.formatNumber(this.getWithdrawableCoins())} <i class="ri-coin-line"></i>`;
         }
     },
 
@@ -91,6 +115,9 @@ const CoinsManager = {
         }
         if (localStorage.getItem(this.STATS_SPENT_KEY) === null) {
             localStorage.setItem(this.STATS_SPENT_KEY, '0');
+        }
+        if (localStorage.getItem(this.WITHDRAWABLE_KEY) === null) {
+            localStorage.setItem(this.WITHDRAWABLE_KEY, '0');
         }
     },
     getTotalWon() {
