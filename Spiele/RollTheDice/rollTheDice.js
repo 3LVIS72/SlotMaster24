@@ -100,7 +100,7 @@ function randIntInclusive(min, max) {
 
   function removeCoins(amount) {
     if (hasCoinsManager() && typeof CoinsManager.removeCoins === 'function') {
-      const success = CoinsManager.removeCoins(amount);
+      const success = CoinsManager.removeCoins(amount, 'game');
       if (!success) return false;
       updateBankDisplay();
       return true;
@@ -116,7 +116,7 @@ function randIntInclusive(min, max) {
 
   function addCoins(amount) {
     if (hasCoinsManager() && typeof CoinsManager.addCoins === 'function') {
-      CoinsManager.addCoins(amount);
+      CoinsManager.addCoins(amount, 'game');
       updateBankDisplay();
       return;
     }
@@ -230,7 +230,8 @@ function randIntInclusive(min, max) {
     updateBankDisplay();
     ui.target.textContent = '–';
     resetDiceUI();
-  
+    ui.roll.disabled = true;
+
     // Events
     ui.newGame.addEventListener('click', newGame);
     ui.low.addEventListener('click', () => setPick('low'));

@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    const PRIZES = ["100 Coins", "1000 Coins", "Niete", "10 Coins", "Thank You", "Niete"];
+    const PRIZES = ["200 Coins", "100 Coins", "Niete", "10 Coins", "Nochmal", "Niete"];
     const COLORS = ["#7C4DFF", "#5E31E6", "#7C4DFF", "#5E31E6", "#7C4DFF", "#5E31E6"];
     const SLICE_ARC = (2 * Math.PI) / PRIZES.length;
 
@@ -30,7 +30,7 @@ document.addEventListener("DOMContentLoaded", () => {
     function awardCoins(amount) {
         if (amount <= 0) return;
         if (hasCoinsManager() && typeof CoinsManager.addCoins === "function") {
-            CoinsManager.addCoins(amount);
+            CoinsManager.addCoins(amount, 'game');
         }
     }
 
@@ -43,7 +43,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function removeCoins(amount) {
         if (hasCoinsManager() && typeof CoinsManager.removeCoins === "function") {
-            return CoinsManager.removeCoins(amount);
+            return CoinsManager.removeCoins(amount, 'game');
         }
         return true;
     }
@@ -126,10 +126,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
         state.bonusSliceIndex = -1;
 
-        if (prize === "Thank You") {
+        if (prize === "Nochmal") {
             result.classList.remove("bonus-glow");
             spinBtn.classList.remove("bonus-button-glow");
             result.innerText = "\u{1F64F} Danke, versuche es erneut!";
+        } else if (prize === "Niete") {
+            result.classList.remove("bonus-glow");
+            spinBtn.classList.remove("bonus-button-glow");
+            result.innerText = "Du hast verloren, -5 Coins!";
+            state.totalScore -= 5;
+            removeCoins(5);
+            updateScoreDisplay();
         } else {
             result.innerText = `\u{1F389} Du gewinnst ${prize}!`;
 
@@ -140,7 +147,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 awardCoins(wonAmount);
                 updateScoreDisplay();
 
-                if (wonAmount >= 1000) {
+                if (wonAmount >= 200) {
                     result.classList.add("bonus-glow");
                     spinBtn.classList.add("bonus-button-glow");
                     state.bonusSliceIndex = sliceIndex;
@@ -191,7 +198,7 @@ document.addEventListener("DOMContentLoaded", () => {
         drawWheel();
     });
 
-    result.textContent = "Bereit zum Drehen? Tippe auf den Button und schnapp dir einen Gewinn.";
+    result.textContent = "Bereit zum Drehen? Klicke auf den Button und schnapp dir einen Gewinn.";
     updateScoreDisplay();
     syncCanvasSize();
     drawWheel();

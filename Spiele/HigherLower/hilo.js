@@ -37,7 +37,7 @@ function setCoins(amount) {
 
 function addCoins(amount) {
   if (hasCoinsManager() && typeof CoinsManager.addCoins === "function") {
-    CoinsManager.addCoins(amount);
+    CoinsManager.addCoins(amount, 'game');
     return;
   }
   fallbackCoins = Math.max(0, fallbackCoins + Math.floor(amount));
@@ -46,7 +46,7 @@ function addCoins(amount) {
 
 function removeCoins(amount) {
   if (hasCoinsManager() && typeof CoinsManager.removeCoins === "function") {
-    return CoinsManager.removeCoins(amount);
+    return CoinsManager.removeCoins(amount, 'game');
   }
   var needed = Math.max(0, Math.floor(amount));
   if (fallbackCoins >= needed) {
