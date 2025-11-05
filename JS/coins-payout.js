@@ -26,7 +26,8 @@ function renderCashouts(){
     div.style.border = '1px solid rgba(0,0,0,0.06)';
     div.style.borderRadius = '10px';
     const date = new Date(item.ts).toLocaleString('de-DE');
-    div.innerHTML = `<b>${fmt(item.amount)} Coins</b> • ${date}<br/><span style="color:var(--text-light)">IBAN: ${item.ibanMasked || item.iban} • Status: ${item.status}</span>`;
+    const euroAmount = item.euroAmount || (item.amount / 1000).toFixed(2);
+    div.innerHTML = `<b>${fmt(item.amount)} Coins (${euroAmount} €)</b> • ${date}<br/><span style="color:var(--text-light)">IBAN: ${item.ibanMasked || item.iban} • Status: ${item.status}</span>`;
     cont.appendChild(div);
   });
 }
@@ -40,10 +41,37 @@ function maskIban(iban){
 
 function show(msg){
   try {
-    const e = new CustomEvent('toast', { detail: { message: msg } });
-    window.dispatchEvent(e);
-  } catch(e){}
-  alert(msg);
+    showToast(msg);
+  } catch(e){
+    alert(msg);
+  }
+}
+
+function showToast(message) {
+  try {
+    // Entferne evtl. vorhandenen Toast
+    const existing = document.querySelector('.toast');
+    if (existing) existing.remove();
+
+    const toast = document.createElement('div');
+    toast.className = 'toast';
+    toast.setAttribute('role', 'status');
+    toast.setAttribute('aria-live', 'polite');
+    toast.textContent = message;
+    document.body.appendChild(toast);
+
+    // Reflow, dann anzeigen
+    void toast.offsetWidth;
+    toast.classList.add('toast--show');
+
+    setTimeout(() => {
+      toast.classList.remove('toast--show');
+      setTimeout(() => toast.remove(), 250);
+    }, 3000);
+  } catch (e) {
+    // Fallback
+    alert(message);
+  }
 }
 
 function onSubmit(e){
@@ -53,32 +81,54 @@ function onSubmit(e){
   const nameEl = document.getElementById('cashout-name');
   const refEl = document.getElementById('cashout-ref');
 
-  const amount = Math.max(100, Math.floor(Number(amountEl.value || 0)));
+  const amount = Math.max(1000, Math.floor(Number(amountEl.value || 0)));
   const iban = String(ibanEl.value||'').trim();
   const name = String(nameEl.value||'').trim();
   const ref = String(refEl.value||'').trim();
 
+  if (amount < 1000) { show('Mindestbetrag für Auszahlung: 1.000 Coins (= 1,00 €)'); return; }
   if (!iban || !name){ show('Bitte IBAN und Kontoinhaber ausfüllen.'); return; }
-  if (typeof CoinsManager === 'undefined' || typeof CoinsManager.hasEnoughCoins !== 'function'){
+  if (typeof CoinsManager === 'undefined' || typeof CoinsManager.getWithdrawableCoins !== 'function'){
     show('CoinsManager nicht verfügbar.'); return;
   }
-  if (!CoinsManager.hasEnoughCoins(amount)) { show('Nicht genug Coins für diese Auszahlung.'); return; }
+  
+  // Prüfe auszahlbares Guthaben (nicht Gesamt-Coins!)
+  const withdrawable = CoinsManager.getWithdrawableCoins();
+  if (withdrawable < amount) { 
+    show(`Nicht genug auszahlbare Coins. Verfügbar: ${fmt(withdrawable)} Coins`); 
+    return; 
+  }
 
-  // Coins abbuchen
-  if (!CoinsManager.removeCoins(amount, 'withdrawal')){ show('Auszahlung fehlgeschlagen.'); return; }
+  // Coins von beiden Guthaben abziehen
+  const currentCoins = CoinsManager.getCoins();
+  CoinsManager.setCoins(currentCoins - amount);
+  CoinsManager.setWithdrawableCoins(withdrawable - amount);
 
-  const entry = { ts: Date.now(), amount, ibanMasked: maskIban(iban), iban, name, ref, status: 'pending' };
+  const euroAmount = (amount / 1000).toFixed(2);
+  const entry = { ts: Date.now(), amount, euroAmount, ibanMasked: maskIban(iban), iban, name, ref, status: 'pending' };
   const list = loadCashouts();
   list.push(entry);
   saveCashouts(list);
 
   renderCashouts();
-  show(`Anfrage erstellt: ${fmt(amount)} Coins. Status: pending`);
-  try { e.target.reset(); amountEl.value = 100; } catch(err){}
+  updateWithdrawableDisplay();
+  show(`Anfrage erstellt: ${fmt(amount)} Coins (${euroAmount} €). Status: pending`);
+  try { e.target.reset(); amountEl.value = 1000; } catch(err){}
+}
+
+function updateWithdrawableDisplay() {
+  const heroWithdrawable = document.getElementById('hero-withdrawable-coins');
+  
+  if (typeof CoinsManager !== 'undefined') {
+    if (heroWithdrawable) {
+      heroWithdrawable.innerHTML = `${fmt(CoinsManager.getWithdrawableCoins())} <i class="ri-coin-line"></i>`;
+    }
+  }
 }
 
 document.addEventListener('DOMContentLoaded', () => {
   renderCashouts();
+  updateWithdrawableDisplay();
   const form = document.getElementById('cashout-form');
   if (form) form.addEventListener('submit', onSubmit);
 });

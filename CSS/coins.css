@@ -164,7 +164,37 @@
     font-size: 2.6rem;
     font-weight: 400;
 }
-.cashout-hero p { opacity: 0.95; }
+.cashout-hero p { 
+    opacity: 0.95;
+    font-size: 1rem;
+    margin-bottom: 1rem;
+}
+
+.hero-balance-divider {
+    width: 200px;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.3);
+    margin: 1rem auto 0.75rem;
+}
+
+.hero-balance-info {
+    text-align: center;
+}
+
+.hero-balance-label {
+    display: block;
+    font-size: 0.75rem;
+    opacity: 0.85;
+    margin-bottom: 0.25rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.hero-balance-amount {
+    font-size: 1.4rem;
+    font-weight: 700;
+    font-family: var(--header-font);
+}
 
 .cashout-content {
     display: grid;
@@ -401,8 +431,35 @@ body.modal-open {
     overflow: hidden;
 }
 
+/* Toast notification */
+.toast {
+    position: fixed;
+    right: 24px;
+    bottom: 24px;
+    background: rgba(0, 0, 0, 0.86);
+    color: #fff;
+    padding: 0.9rem 1.1rem;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+    transform: translateY(10px);
+    opacity: 0;
+    transition: opacity 200ms ease, transform 200ms ease;
+    z-index: 9999;
+    font-weight: 600;
+}
+.toast.toast--show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
 @media (width <= 520px) {
     .modal-summary {
         grid-template-columns: 1fr;
+    }
+    .toast {
+        right: 16px;
+        bottom: 16px;
+        left: 16px;
+        max-width: calc(100vw - 32px);
     }
 }

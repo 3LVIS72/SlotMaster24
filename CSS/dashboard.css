@@ -61,7 +61,22 @@
     padding: 1.5rem;
     border-radius: 12px;
     margin-bottom: 2rem;
+}
+
+.balance {
     text-align: center;
+    margin-bottom: 1rem;
+}
+
+.balance-secondary {
+    text-align: center;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.withdrawable-balance {
+    background: linear-gradient(135deg, #16a34a 0%, #15803d 100%);
+    margin-bottom: 1.5rem;
 }
 
 .balance-label {
@@ -73,6 +88,19 @@
 
 .balance-amount {
     font-size: 2rem;
+    font-weight: 600;
+    font-family: var(--header-font);
+}
+
+.balance-secondary-label {
+    display: block;
+    font-size: 0.8rem;
+    opacity: 0.85;
+    margin-bottom: 0.25rem;
+}
+
+.balance-secondary-amount {
+    font-size: 1.3rem;
     font-weight: 600;
     font-family: var(--header-font);
 }
