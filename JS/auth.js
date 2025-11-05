@@ -183,7 +183,7 @@ function updateNavigation() {
         }
     }
     
-    // ✅ AUTOMATISCHE NAVIGATION: Links für eingeloggte/nicht-eingeloggte Benutzer
+    //  AUTOMATISCHE NAVIGATION: Links für eingeloggte/nicht-eingeloggte Benutzer
     updateNavLinks(isLoggedIn);
 
     // Falls CoinsManager verfügbar ist, sofort die Coin-Anzeige aktualisieren
@@ -202,7 +202,7 @@ window.addEventListener('load', function() {
     }
 });
 
-// ✅ AUTOMATISCHE NAVIGATION: Links anpassen
+// AUTOMATISCHE NAVIGATION: Links anpassen
 function updateNavLinks(isLoggedIn) {
     const navLinks = document.querySelector('.nav__links');
     if (!navLinks) return;

@@ -1,4 +1,4 @@
-/* Hi-Lo – kompakter Ein-Screen Style (nur Spielbereich) */
+
 .hilo {
   padding: clamp(1.2rem, 2.5vw, 2rem) 1rem;
   display: grid;
@@ -20,7 +20,7 @@
   margin: 0;
 }
 
-/* Layout: Karte links, Panel rechts (auf Mobile untereinander) */
+
 .hilo .content {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -79,11 +79,11 @@
   color: var(--text-dark);
 }
 
-/* Einsatzzeile – mehr Luft zwischen Input und Chips */
+/* Einsatzzeile */
 .hilo .bet-row {
   display: grid;
   grid-template-columns: auto 1fr auto;
-  column-gap: 1rem;     /* Abstand Label/Input <-> Chips */
+  column-gap: 1rem;   
   row-gap: 0.5rem;
   align-items: center;
 }
@@ -104,8 +104,8 @@
 .hilo .chips {
   display: inline-grid;
   grid-auto-flow: column;
-  gap: 0.6rem;          /* Abstand zwischen +1/+5/+10 */
-  margin-left: 0.6rem;  /* Abstand zum Input */
+  gap: 0.6rem;          
+  margin-left: 0.6rem;  
 }
 .hilo .chip {
   padding: 0.5rem 0.7rem;
@@ -122,7 +122,7 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 0.6rem;
-  margin-top: 0.6rem;  /* mehr Abstand zu Input/Chips */
+  margin-top: 0.6rem; 
 }
 .hilo .actions button {
   padding: 0.8rem 1rem;
@@ -148,9 +148,8 @@
 .hilo .status.lose { color: #e54770; }
 .hilo .status.push { color: #e0a100; }
 
-/* (Hinweis-Block entfernt – keine .hint mehr nötig) */
 
-/* Leichtes Downscaling bei wenig Höhe (z. B. 720p + große Nav) */
+
 @media (max-height: 750px) and (min-width: 761px) {
   .hilo .card { width: clamp(170px, 24vw, 230px); }
   .hilo .panel { padding: 0.75rem; }
@@ -160,6 +159,6 @@
   .hilo .chips {
     justify-self: start;
     margin-left: 0;
-    margin-top: 0.5rem; /* Chips unter dem Input mit Abstand */
+    margin-top: 0.5rem; 
   }
 }

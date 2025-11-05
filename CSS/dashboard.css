@@ -139,6 +139,100 @@
 .stats-btn.cashout { background: #ef4444; }
 .stats-btn.cashout:hover { background: #dc2626; }
 
+/* Game History */
+.game-history {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.history-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    background: linear-gradient(135deg, rgba(124, 77, 255, 0.08) 0%, rgba(94, 49, 230, 0.08) 100%);
+    border-radius: 12px;
+    border: 1px solid rgba(124, 77, 255, 0.15);
+}
+
+.history-icon {
+    font-size: 2.5rem;
+    line-height: 1;
+}
+
+.history-details {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.history-label {
+    font-size: 0.85rem;
+    color: var(--text-light);
+    font-weight: 500;
+}
+
+.history-value {
+    font-size: 1.1rem;
+    color: var(--text-dark);
+    font-weight: 700;
+}
+
+.game-breakdown {
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid rgba(0,0,0,0.08);
+}
+
+.game-breakdown h3 {
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+    color: var(--text-dark);
+}
+
+.game-breakdown-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.game-breakdown-list li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.75rem;
+    background: rgba(0,0,0,0.02);
+    border-radius: 8px;
+    transition: background 0.2s ease;
+}
+
+.game-breakdown-list li:hover {
+    background: rgba(124, 77, 255, 0.05);
+}
+
+.game-item-icon {
+    font-size: 1.5rem;
+    margin-right: 0.5rem;
+}
+
+.game-item-name {
+    flex: 1;
+    font-weight: 600;
+    color: var(--text-dark);
+}
+
+.game-item-count {
+    font-size: 0.9rem;
+    color: var(--text-light);
+    font-weight: 500;
+}
+
 /* Quick Play Section */
 .quick-play-section h2 {
     font-family: var(--header-font);
