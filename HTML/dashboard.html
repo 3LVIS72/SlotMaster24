@@ -67,6 +67,10 @@
                             <span class="label">Mitglied seit:</span>
                             <span class="value">Heute</span>
                         </div>
+                        <div class="detail-item">
+                            <span class="label">Ausgegeben (Käufe):</span>
+                            <span class="value" id="detail-spent-money">0,00 €</span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -82,10 +86,41 @@
                             <span class="label">In Spielen ausgegeben:</span>
                             <span class="value" id="stats-spent">0 <i class="ri-coin-line"></i></span>
                         </li>
+                        <li class="stats-item">
+                            <span class="label">Ø pro Spiel (Gewinn):</span>
+                            <span class="value" id="stats-avg">0 <i class="ri-coin-line"></i></span>
+                        </li>
                     </ul>
                     <div class="stats-actions">
                         <a class="stats-btn buy" href="/HTML/coins-kaufen.html">Coins kaufen</a>
                         <a class="stats-btn cashout" href="/HTML/coins-auszahlen.html">Coins umwandeln</a>
+                    </div>
+                </div>
+            </div>
+            <div class="account-card">
+                <div class="account-info">
+                    <h2>Spielhistorie</h2>
+                    <div class="game-history">
+                        <div class="history-item">
+                            <span class="history-icon" id="fav-game-icon">🎮</span>
+                            <div class="history-details">
+                                <span class="history-label">Am häufigsten gespielt:</span>
+                                <span class="history-value" id="fav-game-name">Noch keine Spiele</span>
+                            </div>
+                        </div>
+                        <div class="history-item">
+                            <span class="history-icon">🎯</span>
+                            <div class="history-details">
+                                <span class="history-label">Anzahl Runden:</span>
+                                <span class="history-value" id="fav-game-count">0</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="game-breakdown">
+                        <h3>Alle Spiele:</h3>
+                        <ul class="game-breakdown-list" id="all-games-list">
+                            <li>Noch keine Spiele gespielt</li>
+                        </ul>
                     </div>
                 </div>
             </div>

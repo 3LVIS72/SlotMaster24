@@ -130,6 +130,11 @@ function play(guess){
 
   if (!hasEnoughCoins(bet)) { setStatus("Nicht genug Coins.", "lose"); return; }
 
+  // Track game play
+  if (typeof window.trackGamePlayed === 'function') {
+    window.trackGamePlayed('higherlower');
+  }
+
   var prev = current, next = draw();
 
   if (next.rank === prev.rank) {
