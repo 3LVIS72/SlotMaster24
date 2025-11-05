@@ -26,7 +26,6 @@ document.addEventListener('DOMContentLoaded', function() {
             const password = document.querySelector('input[placeholder="Passwort"]').value;
             
             if (handleLogin(username, password)) {
-                alert('Login erfolgreich!');
                 window.location.href = '/HTML/dashboard.html';
             } else {
                 alert('Falscher Benutzername oder Passwort!');
@@ -45,7 +44,6 @@ document.addEventListener('DOMContentLoaded', function() {
             const password = document.querySelector('input[placeholder="Passwort"]').value;
             
             if (handleRegistration(username, email, password)) {
-                alert('Registrierung erfolgreich! Bitte loggen Sie sich ein.');
                 window.location.href = '/HTML/login.html';
             }
         });
