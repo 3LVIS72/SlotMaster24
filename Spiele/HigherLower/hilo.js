@@ -1,4 +1,4 @@
-// === Shared Coins via CoinsManager (Fallback auf lokale Speicherung) ===
+
 var fallbackCoins = 10000;
 
 function hasCoinsManager() {
@@ -96,7 +96,7 @@ function suitColor(s){ return (s==="♥"||s==="♦") ? "#d93654" : "#111"; }
 var deck = makeDeck();
 var current = deck.pop();
 
-// DOM
+
 var elRank   = document.getElementById("rank");
 var elSuitTL = document.getElementById("suitTL");
 var elSuitBR = document.getElementById("suitBR");
@@ -172,7 +172,7 @@ document.querySelectorAll(".chip").forEach(function(btn){
   });
 });
 
-// wenn Coins sich woanders ändern (anderer Tab/Seite), hier live aktualisieren
+
 window.addEventListener("storage", function(e){
   if (e.key === "userCoins") renderCoins();
 });
