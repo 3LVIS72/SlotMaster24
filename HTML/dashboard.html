@@ -78,9 +78,18 @@
                     </div>
                 </div>
             </div>
-            <div class="account-card">
+            <div class="account-card stats-card">
                 <div class="account-info">
                     <h2>Deine Spiel-Statistiken</h2>
+                    <!-- Avatar Animation von der LottieWebsite mit Lottiefile-->
+                    <div class="stats-animation">
+                        <dotlottie-wc
+                            src="https://lottie.host/b9b25528-99ca-4f1e-9815-f66f2aa7f64e/1JxbQ2TE8y.lottie"
+                            autoplay
+                            loop
+                        ></dotlottie-wc>
+                        <span class="stats-avatar-name" id="stats-username">Spieler</span>
+                    </div>
                     <ul class="stats-list">
                         <li class="stats-item">
                             <span class="label">In Spielen gewonnen:</span>
@@ -177,5 +186,6 @@
     <script src="/JS/dashboard.js"></script>
     <script src="/JS/navbar.js"></script>
     <script src="/JS/coins.js"></script>
+    <script src="https://unpkg.com/@lottiefiles/dotlottie-wc@0.8.5/dist/dotlottie-wc.js" type="module"></script>
 </body>
 </html>

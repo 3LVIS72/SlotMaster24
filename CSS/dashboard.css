@@ -51,6 +51,10 @@
     color: var(--text-dark);
 }
 
+.stats-card .account-info h2 {
+    margin-bottom: 0rem;
+}
+
 .balance {
     background: linear-gradient(135deg, #7C4DFF 0%, #5E31E6 100%);
     color: white;
@@ -126,6 +130,30 @@
     gap: 0.75rem;
     flex-wrap: wrap;
 }
+
+.stats-animation {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0.25rem 0 1.2rem;
+    flex-direction: column;
+}
+.stats-card .stats-animation {
+    margin-top: 0.1rem;
+}
+
+.stats-animation dotlottie-wc {
+    width: 220px;
+    height: 220px;
+}
+
+.stats-avatar-name {
+    margin-top: -1.7rem;
+    font-size: 0.95rem;
+    color: var(--text-dark);
+    font-weight: 600;
+}
+
 .stats-btn {
     display: inline-block;
     padding: 0.6rem 1rem;
