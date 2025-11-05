@@ -7,12 +7,18 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function updateDashboardUserInfo() {
-    const username = localStorage.getItem('userUsername');
+    const rawUsername = localStorage.getItem('userUsername');
+    const username = rawUsername && rawUsername.trim() ? rawUsername.trim() : null;
     const email = localStorage.getItem('userEmail');
    
     // Benutzerinfo in Dashboard anzeigen
-    document.getElementById('dashboard-username').textContent = username || 'Spieler';
+    const displayName = username || 'Spieler';
+    document.getElementById('dashboard-username').textContent = displayName;
     document.getElementById('detail-username').textContent = username || '-';
+    const statsUsernameEl = document.getElementById('stats-username');
+    if (statsUsernameEl) {
+        statsUsernameEl.textContent = displayName;
+    }
     document.getElementById('detail-email').textContent = email || '-';
 
     // Berechne ausgegebenes Geld
