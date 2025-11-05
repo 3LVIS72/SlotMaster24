@@ -55,7 +55,7 @@
     margin-bottom: 0rem;
 }
 
-.balance {
+.balance-container {
     background: linear-gradient(135deg, #7C4DFF 0%, #5E31E6 100%);
     color: white;
     padding: 1.5rem;
@@ -72,11 +72,6 @@
     text-align: center;
     padding-top: 1rem;
     border-top: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-.withdrawable-balance {
-    background: linear-gradient(135deg, #16a34a 0%, #15803d 100%);
-    margin-bottom: 1.5rem;
 }
 
 .balance-label {
