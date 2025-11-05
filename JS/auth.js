@@ -202,7 +202,7 @@ window.addEventListener('load', function() {
     }
 });
 
-// ✅ AUTOMATISCHE NAVIGATION: Links anpassen
+// AUTOMATISCHE NAVIGATION: Links anpassen
 function updateNavLinks(isLoggedIn) {
     const navLinks = document.querySelector('.nav__links');
     if (!navLinks) return;
