@@ -1,13 +1,13 @@
-/* Header Section: Alles rund um die NavBar */
+/* Header Section */
 .header__container {
   max-width: var(--max-width);
   margin: auto;
   padding-block: 2rem;
   padding-inline: 1rem;
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(2, 1fr); /* Zwei Spalten: Text und Video (Jede nimmt gleich viel Platz ein) */
   align-items: center;
-  gap: 4rem;
+  gap: 4rem; /* Abstand zwischen den Spalten (Also zwischen Text und Video) */
 }
 
 .header__content h1 {
@@ -16,7 +16,7 @@
   font-weight: 400;
   font-family: var(--header-font);
   color: var(--text-dark);
-  line-height: 5.5rem;
+  line-height: 5.5rem; /* Zeilenabstand */
   text-align: left;
 }
 
@@ -38,9 +38,9 @@
   text-align: left;
 }
 
-/* CTA Button Styles */
+/* CTA (Call to Action) Button Styles - Der Nutzer wird klicken => Zu den Spielen */
 .cta-button {
-  display: inline-block;
+  display: inline-block; 
   padding: 1rem 2rem;
   background: var(--primary-color);
   color: var(--white);
@@ -56,7 +56,7 @@
 
 .cta-button:hover {
   background: var(--primary-color-dark);
-  transform: translateY(-2px);
+  transform: translateY(-2px); /* Leicht nach oben bewegen beim Hover-Effekt - Verschiebung auf der Y-Achse */
 }
 
 .cta-button:active {
@@ -92,84 +92,7 @@
   z-index: -1;
 }
 
-/* Welcome-Bereich für eingeloggte Benutzer */
-.welcome-section {
-    padding: 2rem 1rem;
-    text-align: center;
-    background: linear-gradient(135deg, #7C4DFF 0%, #5E31E6 100%);
-    color: white;
-    width: 100%;
-}
-
-.welcome-container {
-    max-width: 600px;
-    margin: 0 auto;
-}
-
-.welcome-section h1 {
-    font-family: var(--header-font);
-    font-size: 2.5rem;
-    margin-bottom: 1rem;
-    font-weight: 400;
-}
-
-.welcome-section p {
-    font-size: 1.1rem;
-    margin-bottom: 1.5rem;
-    opacity: 0.9;
-}
-
-.welcome-actions {
-    display: flex;
-    gap: 1rem;
-    justify-content: center;
-    flex-wrap: wrap;
-}
-
-.btn.primary {
-    background: var(--white);
-    color: var(--primary-color);
-    padding: 0.75rem 1.5rem;
-    border: none;
-    border-radius: 10px;
-    font-size: 1rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s;
-    text-decoration: none;
-    display: inline-block;
-}
-
-.btn.primary:hover {
-    background: #f0f0f0;
-    transform: translateY(-2px);
-}
-
-.btn.secondary {
-    background: transparent;
-    color: var(--white);
-    border: 2px solid var(--white);
-    padding: 0.75rem 1.5rem;
-    border-radius: 10px;
-    font-size: 1rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s;
-}
-
-.btn.secondary:hover {
-    background: rgba(255,255,255,0.1);
-}
-
-/* ===== RESPONSIVE DESIGN FÜR HOME PAGE ===== */
-
-/* Tablet (width <= 1024px) */
-@media (width <= 1024px) {
-  .header__content h1 {
-    font-size: 4rem;
-    line-height: 4.5rem;
-  }
-}
+/* RESPONSIVE DESIGN FÜR HOME PAGE */
 
 /* Mobile (width <= 768px) */
 @media (width <= 768px) {
@@ -201,7 +124,7 @@
   /* Header Video */
   .header__video {
     justify-content: center;
-    order: -1; /* Video kommt vor Text auf Mobile */
+    order: -1; /* Video kommt vor Text auf Handy */
   }
 
   .header__video video {
