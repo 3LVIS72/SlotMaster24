@@ -103,6 +103,50 @@
     </section>
   </main>
 
+  <div class="payment-overlay" id="paymentOverlay" hidden>
+    <div class="payment-modal" role="dialog" aria-modal="true" aria-labelledby="paymentTitle" tabindex="-1">
+      <button type="button" class="modal-close" id="paymentClose" aria-label="Fenster schließen">
+        <i class="ri-close-line"></i>
+      </button>
+      <header class="modal-header">
+        <h2 id="paymentTitle">Zahlungsart wählen</h2>
+        <p id="paymentSubtitle">Wähle eine Zahlungsart, um deine Coins zu sichern.</p>
+      </header>
+      <section class="modal-summary">
+        <div>
+          <span class="summary-label">Paket</span>
+          <span class="summary-value" id="paymentPackCoins">–</span>
+        </div>
+        <div>
+          <span class="summary-label">Preis</span>
+          <span class="summary-value" id="paymentPackPrice">–</span>
+        </div>
+      </section>
+      <section class="modal-methods" aria-label="Zahlungsmethoden">
+        <button type="button" class="method-btn method-btn--paypal" data-method="paypal">
+          <i class="ri-paypal-line"></i>
+          <span>PayPal</span>
+        </button>
+        <button type="button" class="method-btn method-btn--klarna" data-method="klarna">
+          <i class="ri-bank-card-line"></i>
+          <span>Klarna</span>
+        </button>
+        <button type="button" class="method-btn method-btn--card" data-method="card">
+          <i class="ri-visa-line"></i>
+          <span>Kreditkarte</span>
+        </button>
+        <button type="button" class="method-btn method-btn--apple" data-method="applepay">
+          <i class="ri-apple-fill"></i>
+          <span>Apple Pay</span>
+        </button>
+      </section>
+      <section class="modal-status" id="paymentStatus" aria-live="polite"></section>
+      <footer class="modal-footer">
+        <p>Hinweis: Dies ist eine Demo. Für echte Zahlungen benötigst du eine Anbindung an einen Zahlungsanbieter.</p>
+      </footer>
+    </div>
+  </div>
+
   <footer>
     <p>&copy; 2025 SlotMaster24 – Alle Rechte vorbehalten</p>
     <p>
