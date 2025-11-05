@@ -92,9 +92,20 @@
         <!-- Row 3 (single centered) -->
         <div>
           <article class="card_ueberuns">
-            <h3>Marvin Blank</h3>
+            <h3>
+              <button type="button" class="marvin-trigger marvin-trigger--name" data-marvin-trigger>
+                Marvin Blank
+              </button>
+            </h3>
             <div class="team-image">
-              <img src="/Bilder/marvbla.jpg" alt="Marvin Blank">
+              <button
+                type="button"
+                class="marvin-trigger marvin-trigger--image"
+                data-marvin-trigger
+                aria-label="Song von Marvin Blank abspielen"
+              >
+                <img src="/Bilder/marvbla.jpg" alt="Marvin Blank" />
+              </button>
             </div>
             <p>Projekt & QA – hält die Bank: klare Regeln, sauberer Code, hohe Gewinne.</p>  
           </article>
@@ -115,5 +126,56 @@
     <script src="/JS/coins.js"></script>
     <script src="/JS/auth.js"></script>
     <script src="/JS/navbar.js"></script>
+    <audio id="marvinAudio" src="/Audio/MarvinBlankSnippet.mp3" preload="auto"></audio>
+    <script>
+      (function () {
+        var audio = document.getElementById("marvinAudio");
+        if (!audio) return;
+
+        var triggers = document.querySelectorAll("[data-marvin-trigger]");
+        if (!triggers.length) return;
+
+        function updatePressedState(isActive) {
+          triggers.forEach(function (btn) {
+            btn.setAttribute("aria-pressed", isActive ? "true" : "false");
+          });
+        }
+
+        function playSnippet() {
+          if (!audio) return;
+          if (!audio.paused) {
+            audio.currentTime = 0;
+          }
+
+          var playPromise = audio.play();
+          if (playPromise && typeof playPromise.then === "function") {
+            playPromise.then(function () {
+              updatePressedState(true);
+            }).catch(function () {
+              updatePressedState(false);
+            });
+          } else {
+            updatePressedState(true);
+          }
+        }
+
+        triggers.forEach(function (btn) {
+          btn.addEventListener("click", function () {
+            playSnippet();
+          });
+        });
+
+        updatePressedState(false);
+        audio.addEventListener("play", function () {
+          updatePressedState(true);
+        });
+        audio.addEventListener("ended", function () {
+          updatePressedState(false);
+        });
+        audio.addEventListener("pause", function () {
+          updatePressedState(false);
+        });
+      })();
+    </script>
   </body>
 </html>
