@@ -8,18 +8,17 @@ menuBtn.addEventListener("click", (e) => {
   const isOpen = navLinks.classList.contains("open");
   menuBtnIcon.setAttribute("class", isOpen ? "ri-close-line" : "ri-menu-line");
   
-  // Body Scroll verhindern wenn Menü offen ist
-  document.body.style.overflow = isOpen ? 'hidden' : '';
+  document.body.style.overflow = isOpen ? 'hidden' : ''; // Body Scroll verhindern wenn Menü offen ist
 });
 
 navLinks.addEventListener("click", (e) => {
   navLinks.classList.remove("open");
   menuBtnIcon.setAttribute("class", "ri-menu-line");
-  document.body.style.overflow = ''; // Scrollen dann wieder erlauben
+  document.body.style.overflow = ''; // Scrollen dann wieder erlauben, also wenn man wo draufgeklickt hat
 });
 
 // Menü schließen wenn außerhalb geklickt wird...
-document.addEventListener('click', (e) => {
+document.addEventListener("click", (e) => {
   if (!navLinks.contains(e.target) && !menuBtn.contains(e.target) && navLinks.classList.contains('open')) {
     navLinks.classList.remove("open");
     menuBtnIcon.setAttribute("class", "ri-menu-line");
@@ -60,11 +59,18 @@ ScrollReveal().reveal(".cta-button-div", {
   delay: 2000,
 });
 
-// Wenn das Video im Header vorhanden ist, automatisch abspielen
+// Wenn die Seite vollständig geladen ist (DOM aufgebaut)
 document.addEventListener('DOMContentLoaded', function() {
+  
+  // Sucht das <video> im Header-Bereich
   const video = document.querySelector('.header__video video');
+  
+  // Wenn es ein Video gibt ...
   if (video) {
+    // ... versuche, es automatisch abzuspielen
     video.play().catch(error => {
+      // Wenn der Browser das nicht erlaubt (z. B. iPhone ohne Nutzerinteraktion),
+      // wird der Fehler hier abgefangen und nur in der Konsole angezeigt.
       console.log('Video autoplay failed:', error);
     });
   }

@@ -11,7 +11,7 @@
   --header-font: "Bebas Neue", sans-serif;
 }
 
-/* ===== RESET & BASE STYLES ===== */
+/* Basis Styles: Für alles Elemente auf jeder Seite */
 * {
   padding: 0;
   margin: 0;
@@ -40,7 +40,7 @@ main {
   width: 100%;
 }
 
-/* ===== NAVIGATION ===== */
+/* Die NavBar */
 nav {
   padding-block: 2rem 0;
   padding-inline: 1rem;
@@ -140,7 +140,7 @@ nav {
   background-color: var(--primary-color-dark);
 }
 
-/* ===== FOOTER ===== */
+/* FOOTER */
 footer {
   margin-top: auto;
   width: 100%;
@@ -161,9 +161,9 @@ footer a:hover {
   color: var(--primary-color-dark);
 }
 
-/* ===== RESPONSIVE DESIGN - MOBILE ===== */
+/* RESPONSIVE DESIGN - Handys */
 @media (width <= 768px) {
-  /* Navigation für Mobile */
+  /* Navigation für Handys */
   nav {
     position: fixed;
     top: 0;
@@ -207,7 +207,7 @@ footer a:hover {
     background-color: var(--primary-color);
     transition: 0.5s;
     z-index: 8;
-    transform: translateY(-100%);
+    transform: translateY(-100%); /* Versteckt die Responsive NavBar: Erst wenn in JS open getoggelt wird, wird sie sichtbar */
     opacity: 0;
     visibility: hidden;
     display: flex;
@@ -217,7 +217,7 @@ footer a:hover {
   }
 
   .nav__links.open {
-    transform: translateY(0);
+    transform: translateY(0); /* Zeigt die Responsive NavBar an */
     opacity: 1;
     visibility: visible;
   }
@@ -243,20 +243,9 @@ footer a:hover {
     display: none;
   }
 
-  /* Footer Anpassung für Mobile */
+  /* Footer Anpassung für Handy */
   footer {
     position: relative;
     margin-top: 2rem;
-  }
-}
-
-@media (width <= 480px) {
-  .nav__links {
-    padding: 1rem;
-  }
-
-  .nav__links a {
-    font-size: 1.1rem;
-    padding: 0.8rem 1.5rem;
   }
 }
