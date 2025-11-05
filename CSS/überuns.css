@@ -32,7 +32,7 @@
 }
 
 .footer_ueber_uns {
-  position: static; /* standard Flow */
+  position: static; 
   left: auto;
   bottom: auto;
   width: 100%;
