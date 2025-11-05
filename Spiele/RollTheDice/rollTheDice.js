@@ -189,8 +189,10 @@ function randIntInclusive(min, max) {
     const d2 = randIntInclusive(1,6);
     const sum = d1 + d2;
   
-    // Animation stoppen & Ergebnis anzeigen
+  // Animation stoppen & Ergebnis anzeigen
     setRolling(false);
+    if (ui.cube1) ui.cube1.textContent = dieFace(d1); // show final face on animated cube
+    if (ui.cube2) ui.cube2.textContent = dieFace(d2);
     ui.d1.textContent = dieFace(d1);
     ui.d2.textContent = dieFace(d2);
     ui.sum.textContent = String(sum);
