@@ -1,42 +1,27 @@
-// dashboard.js - Dashboard-spezifische Funktionen
+// Dashboard-spezifische Funktionen
 document.addEventListener('DOMContentLoaded', function() {
     updateDashboardUserInfo();
     initDailyBonusUI();
     updateDashboardStats();
     updateGameHistory();
-
-    // Optional: Bonus per URL-Parameter einmalig zurücksetzen (?resetBonus=1)
-    try {
-        const params = new URLSearchParams(window.location.search);
-        if (params.get('resetBonus') === '1') {
-            resetDailyBonus();
-            params.delete('resetBonus');
-            const newUrl = `${location.pathname}${params.toString() ? '?' + params.toString() : ''}${location.hash}`;
-            window.history.replaceState({}, document.title, newUrl);
-        }
-    } catch (e) {
-        // still fine without URL API
-    }
 });
 
+// User Informationen
 function updateDashboardUserInfo() {
     const username = localStorage.getItem('userUsername');
     const email = localStorage.getItem('userEmail');
    
-    // Benutzerinfo in Dashboard anzeigen
     document.getElementById('dashboard-username').textContent = username || 'Spieler';
     document.getElementById('detail-username').textContent = username || '-';
     document.getElementById('detail-email').textContent = email || '-';
 
-    // Berechne ausgegebenes Geld
     updateSpentMoney();
 
-    // Wenn CoinsManager vorhanden ist, Dashboard-Coin-Anzeige aktualisieren
     if (typeof CoinsManager !== 'undefined' && CoinsManager.updateCoinsDisplay) {
         CoinsManager.updateCoinsDisplay();
     }
 }
-
+// Ausgegebenes Geld
 function updateSpentMoney() {
     const spentMoneyEl = document.getElementById('detail-spent-money');
     if (!spentMoneyEl) return;
@@ -55,7 +40,7 @@ function updateSpentMoney() {
         spentMoneyEl.textContent = '0,00 €';
     }
 }
-
+// Dashboard Statistik 
 function updateDashboardStats() {
     try {
         const wonEl = document.getElementById('stats-won');
@@ -70,7 +55,7 @@ function updateDashboardStats() {
         wonEl.innerHTML = `${fmt(won)} <i class="ri-coin-line"></i>`;
         spentEl.innerHTML = `${fmt(spent)} <i class="ri-coin-line"></i>`;
 
-        // Berechne durchschnittlichen Gewinn pro Spiel
+    
         if (avgEl) {
             const totalGamesPlayed = getTotalGamesPlayed();
             if (totalGamesPlayed > 0) {
@@ -95,7 +80,7 @@ function updateDashboardStats() {
         }
     } catch (e) {}
 }
-
+// Gesamtzahl gespielter Runden
 function getTotalGamesPlayed() {
     try {
         const historyData = JSON.parse(localStorage.getItem('gameHistory') || '{}');
@@ -105,7 +90,7 @@ function getTotalGamesPlayed() {
     }
 }
 
-// Live-Updates für Statistik
+// Spiele Statistik
 window.addEventListener('statschange', updateDashboardStats);
 window.addEventListener('gamehistorychange', updateDashboardStats);
 window.addEventListener('storage', (e) => {
@@ -121,7 +106,6 @@ window.addEventListener('storage', (e) => {
     }
 });
 
-// Game History Logic
 const GAME_NAMES = {
     'spinwheel': { name: 'Spin Wheel', icon: '🎡' },
     'higherlower': { name: 'Higher/Lower', icon: '🎲' },
@@ -129,6 +113,7 @@ const GAME_NAMES = {
     'coinflip': { name: 'Coin Flip', icon: '🪙' }
 };
 
+// Spielhistorie 
 function updateGameHistory() {
     try {
         const historyData = JSON.parse(localStorage.getItem('gameHistory') || '{}');
@@ -151,7 +136,7 @@ function updateGameHistory() {
             }
         }
 
-        // Aktualisiere Favoriten-Spiel
+        // Favoriten-Spiel
         if (maxGame && GAME_NAMES[maxGame]) {
             favGameIcon.textContent = GAME_NAMES[maxGame].icon;
             favGameName.textContent = GAME_NAMES[maxGame].name;
@@ -162,7 +147,7 @@ function updateGameHistory() {
             favGameCount.textContent = '0';
         }
 
-        // Aktualisiere komplette Liste
+        // Komplette Liste
         if (games.length === 0) {
             allGamesList.innerHTML = '<li>Noch keine Spiele gespielt</li>';
         } else {
@@ -186,7 +171,7 @@ function updateGameHistory() {
     }
 }
 
-// Funktion zum Tracken von Spielen (wird von den Spielen aufgerufen)
+// Funktion zum Tracken von Spielen 
 function trackGamePlayed(gameKey) {
     try {
         const historyData = JSON.parse(localStorage.getItem('gameHistory') || '{}');
@@ -209,7 +194,7 @@ if (typeof window !== 'undefined') {
     window.trackGamePlayed = trackGamePlayed;
 }
 
-// Daily Bonus Logic
+// Tagesbonus 
 const DAILY_BONUS_KEY = 'dailyBonusLastClaimDate';
 const DAILY_BONUS_AMOUNT = 500;
 
@@ -248,13 +233,12 @@ function initDailyBonusUI() {
             setDailyBonusClaimedUI();
         }
     } catch (e) {
-        // localStorage evtl. nicht verfügbar – UI bleibt im Standardzustand
+        
     }
 }
 
 function showToast(message) {
     try {
-        // Entferne evtl. vorhandenen Toast
         const existing = document.querySelector('.toast');
         if (existing) existing.remove();
 
@@ -289,51 +273,14 @@ function claimDailyBonus() {
             return;
         }
     } catch (e) {
-        // Ignoriere Storage-Fehler, gewähre Bonus einmalig in dieser Session
     }
-
-    // Coins gutschreiben
     if (typeof CoinsManager !== 'undefined' && typeof CoinsManager.addCoins === 'function') {
         CoinsManager.addCoins(DAILY_BONUS_AMOUNT);
     }
-
-    // Persistieren, dass der Bonus heute eingelöst wurde
     try {
         localStorage.setItem(DAILY_BONUS_KEY, today);
     } catch (e) {
-        // Falls Storage fehlschlägt, UI trotzdem aktualisieren
     }
-
-    // UI aktualisieren
     setDailyBonusClaimedUI();
-
-    // Hinweis anzeigen
     showToast('🎉 Du hast 500 Coins erhalten!');
-}
-
-// Dev/Test-Helfer: Bonus zurücksetzen und UI entsperren
-function resetDailyBonus() {
-    try {
-        localStorage.removeItem(DAILY_BONUS_KEY);
-    } catch (e) {}
-
-    const promoCard = document.querySelector('.promo-card');
-    if (promoCard) {
-        promoCard.classList.remove('disabled');
-        const msg = promoCard.querySelector('p');
-        if (msg) {
-            msg.textContent = 'Logge dich täglich ein und erhalte 500 Bonus-Münzen!';
-        }
-        const btn = promoCard.querySelector('.claim-btn');
-        if (btn) {
-            btn.disabled = false;
-            btn.removeAttribute('aria-disabled');
-            btn.style.pointerEvents = '';
-            btn.style.opacity = '';
-        }
-    }
-
-    // global verfügbar machen für Konsole
-    try { window.resetDailyBonus = resetDailyBonus; } catch (e) {}
-    showToast('🔄 Täglicher Bonus wurde zurückgesetzt.');
 }
