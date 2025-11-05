@@ -37,7 +37,7 @@
 
     <!-- Dashboard Hauptinhalt -->
     <main class="dashboard__container">
-        <!-- Willkommens-Bereich (angepasst: Coins statt Begrüßung) -->
+        
         <section class="welcome-section">
             <div class="welcome-content">
                 <h1>Willkommen, <span id="dashboard-username">Spieler</span>!</h1>
@@ -50,9 +50,15 @@
             <div class="account-card">
                 <div class="account-info">
                     <h2>Dein Konto</h2>
-                    <div class="balance">
-                        <span class="balance-label">Spielguthaben</span>
-                        <span class="balance-amount" id="balance-coins">-- <i class="ri-coin-line"></i></span>
+                    <div class="balance-container">
+                        <div class="balance">
+                            <span class="balance-label">Spielguthaben</span>
+                            <span class="balance-amount" id="balance-coins">-- <i class="ri-coin-line"></i></span>
+                        </div>
+                        <div class="balance-secondary">
+                            <span class="balance-secondary-label">Auszahlbar:</span>
+                            <span class="balance-secondary-amount" id="withdrawable-coins">-- <i class="ri-coin-line"></i></span>
+                        </div>
                     </div>
                     <div class="account-details">
                         <div class="detail-item">
@@ -72,11 +78,24 @@
                             <span class="value" id="detail-spent-money">0,00 €</span>
                         </div>
                     </div>
+                    <div class="stats-actions">
+                        <a class="stats-btn buy" href="/HTML/coins-kaufen.html">Coins kaufen</a>
+                        <a class="stats-btn cashout" href="/HTML/coins-auszahlen.html">Coins umwandeln</a>
+                    </div>
                 </div>
             </div>
-            <div class="account-card">
+            <div class="account-card stats-card">
                 <div class="account-info">
                     <h2>Deine Spiel-Statistiken</h2>
+                    <!-- Avatar Animation von der LottieWebsite mit Lottiefile-->
+                    <div class="stats-animation">
+                        <dotlottie-wc
+                            src="https://lottie.host/b9b25528-99ca-4f1e-9815-f66f2aa7f64e/1JxbQ2TE8y.lottie"
+                            autoplay
+                            loop
+                        ></dotlottie-wc>
+                        <span class="stats-avatar-name" id="stats-username">Spieler</span>
+                    </div>
                     <ul class="stats-list">
                         <li class="stats-item">
                             <span class="label">In Spielen gewonnen:</span>
@@ -91,10 +110,6 @@
                             <span class="value" id="stats-avg">0 <i class="ri-coin-line"></i></span>
                         </li>
                     </ul>
-                    <div class="stats-actions">
-                        <a class="stats-btn buy" href="/HTML/coins-kaufen.html">Coins kaufen</a>
-                        <a class="stats-btn cashout" href="/HTML/coins-auszahlen.html">Coins umwandeln</a>
-                    </div>
                 </div>
             </div>
             <div class="account-card">
@@ -134,7 +149,7 @@
                     <div class="game-icon">🎲</div>
                     <h3>Würfel Spiel</h3>
                     <p>Einmal Würfeln bitte</p>
-                    <a href="/Spiele/SpinWheel/spinwheel.html" class="play-btn">Spielen</a>
+                    <a href="/Spiele/RollTheDice/rollTheDice.html" class="play-btn">Spielen</a>
                 </div>
                 <div class="game-card">
                     <div class="game-icon">🪙</div>
@@ -143,10 +158,10 @@
                     <a href="/Spiele/CoinFlip/coinflip.html" class="play-btn">Spielen</a>
                 </div>
                 <div class="game-card">
-                    <div class="game-icon">🏆</div>
-                    <h3>Highscores</h3>
-                    <p>Deine Bestleistungen</p>
-                    <a href="/HTML/spiele.html#highscores" class="play-btn">Ansehen</a>
+                    <div class="game-icon">🎡</div>
+                    <h3>Spin Wheel</h3>
+                    <p>Drehe das Glücksrad</p>
+                    <a href="/Spiele/SpinWheel/spinwheel.html" class="play-btn">Spielen</a>
                 </div>
             </div>
         </section>
@@ -177,5 +192,6 @@
     <script src="/JS/dashboard.js"></script>
     <script src="/JS/navbar.js"></script>
     <script src="/JS/coins.js"></script>
+    <script src="https://unpkg.com/@lottiefiles/dotlottie-wc@0.8.5/dist/dotlottie-wc.js" type="module"></script>
 </body>
 </html>

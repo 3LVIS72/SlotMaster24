@@ -37,7 +37,12 @@
     </div>
     <section class="cashout-hero">
       <h1>Coins auszahlen</h1>
-      <p>Ab 100 Coins kannst du eine Auszahlung beantragen. Dieser Ablauf ist in der Demo simuliert.</p>
+      <p>Ab 1.000 Coins kannst du eine Auszahlung beantragen. <strong>1.000 Coins = 1,00 €</strong></p>
+      <div class="hero-balance-divider"></div>
+      <div class="hero-balance-info">
+        <span class="hero-balance-label">Auszahlbar:</span>
+        <span class="hero-balance-amount" id="hero-withdrawable-coins">-- <i class="ri-coin-line"></i></span>
+      </div>
     </section>
 
     <section class="cashout-content">
@@ -45,8 +50,8 @@
         <form id="cashout-form" class="cashout-form">
           <div class="field-grid">
             <label>
-              Betrag (min. 100 Coins)
-              <input type="number" id="cashout-amount" min="100" step="100" value="100">
+              Betrag (min. 1.000 Coins)
+              <input type="number" id="cashout-amount" min="1000" step="100" value="1000">
             </label>
             <label>
               IBAN
