@@ -124,6 +124,11 @@
       return;
     }
 
+    // Track game play
+    if (typeof window.trackGamePlayed === 'function') {
+      window.trackGamePlayed('coinflip');
+    }
+
     isFlipping = true;
     setStatus("Münze wird geworfen …", "info");
     setResultText("");

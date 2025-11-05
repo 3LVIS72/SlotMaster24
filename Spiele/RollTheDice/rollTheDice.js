@@ -174,6 +174,11 @@ function randIntInclusive(min, max) {
       ui.result.textContent = 'Nicht genug Coins (5 benötigt).';
       return;
     }
+
+    // Track game play
+    if (typeof window.trackGamePlayed === 'function') {
+      window.trackGamePlayed('rollthedice');
+    }
   
     // Animation starten
     state.busy = true;

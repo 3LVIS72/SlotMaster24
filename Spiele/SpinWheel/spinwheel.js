@@ -181,6 +181,11 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
+        // Track game play
+        if (typeof window.trackGamePlayed === 'function') {
+            window.trackGamePlayed('spinwheel');
+        }
+
         state.totalScore -= 5;
         updateScoreDisplay();
 
