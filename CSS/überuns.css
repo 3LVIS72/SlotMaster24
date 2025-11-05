@@ -31,24 +31,17 @@
   margin: 0 auto 2rem;
 }
 
-/* Footer für Über-uns-Seite */
 .footer_ueber_uns {
-  position: fixed;
-  left: 0;
-  bottom: 0;
+  position: static; 
+  left: auto;
+  bottom: auto;
   width: 100%;
   background: var(--white);
   color: var(--text-light);
   text-align: center;
   padding: 0.75rem 1rem;
   border-top: 1px solid rgba(0, 0, 0, 0.06);
-  box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.04);
-  z-index: 5;
-}
-
-/* Verhindert, dass der fixe Footer Inhalte überlappt */
-.ueber-uns--with-footer {
-  padding-bottom: 6.5rem; /* ~Footerhöhe + Luft */
+  box-shadow: none;
 }
 
 /* Team-Grid Struktur */
@@ -174,13 +167,9 @@
     height: 120px;
   }
   
-  /* Anpassung für fixen Footer auf Mobile */
-  .ueber-uns--with-footer {
-    padding-bottom: 5rem;
-  }
-  
+  /* Mobile */
   .footer_ueber_uns {
-    position: relative;
+    position: static;
     margin-top: 2rem;
   }
 }
