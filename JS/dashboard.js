@@ -4,19 +4,6 @@ document.addEventListener('DOMContentLoaded', function() {
     initDailyBonusUI();
     updateDashboardStats();
     updateGameHistory();
-
-    // Optional: Bonus per URL-Parameter einmalig zurücksetzen (?resetBonus=1)
-    try {
-        const params = new URLSearchParams(window.location.search);
-        if (params.get('resetBonus') === '1') {
-            resetDailyBonus();
-            params.delete('resetBonus');
-            const newUrl = `${location.pathname}${params.toString() ? '?' + params.toString() : ''}${location.hash}`;
-            window.history.replaceState({}, document.title, newUrl);
-        }
-    } catch (e) {
-        // still fine without URL API
-    }
 });
 
 function updateDashboardUserInfo() {
@@ -315,31 +302,4 @@ function claimDailyBonus() {
 
     // Hinweis anzeigen
     showToast('🎉 Du hast 500 Coins erhalten!');
-}
-
-// Dev/Test-Helfer: Bonus zurücksetzen und UI entsperren
-function resetDailyBonus() {
-    try {
-        localStorage.removeItem(DAILY_BONUS_KEY);
-    } catch (e) {}
-
-    const promoCard = document.querySelector('.promo-card');
-    if (promoCard) {
-        promoCard.classList.remove('disabled');
-        const msg = promoCard.querySelector('p');
-        if (msg) {
-            msg.textContent = 'Logge dich täglich ein und erhalte 500 Bonus-Münzen!';
-        }
-        const btn = promoCard.querySelector('.claim-btn');
-        if (btn) {
-            btn.disabled = false;
-            btn.removeAttribute('aria-disabled');
-            btn.style.pointerEvents = '';
-            btn.style.opacity = '';
-        }
-    }
-
-    // global verfügbar machen für Konsole
-    try { window.resetDailyBonus = resetDailyBonus; } catch (e) {}
-    showToast('🔄 Täglicher Bonus wurde zurückgesetzt.');
 }
