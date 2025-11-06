@@ -21,9 +21,6 @@
     align-items: center;
 }
 
-/* ===================== */
-/* Coins Store Styling   */
-/* ===================== */
 .coins-store {
     max-width: var(--max-width);
     margin: 2rem auto;
@@ -143,9 +140,7 @@
 }
 .back-link:hover { color: var(--primary-color-dark); }
 
-/* ===================== */
-/* Cashout Page Styling  */
-/* ===================== */
+
 .coins-cashout {
     max-width: var(--max-width);
     margin: 0 auto 2rem;
@@ -272,9 +267,7 @@
     .field-grid { grid-template-columns: 1fr; }
 }
 
-/* ===================== */
-/* Payment Modal Overlay */
-/* ===================== */
+
 .payment-overlay[hidden] {
     display: none;
 }
