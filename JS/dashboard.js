@@ -1,4 +1,4 @@
-// dashboard.js - Dashboard-spezifische Funktionen
+// Dashboard Funktionen
 document.addEventListener('DOMContentLoaded', function() {
     updateDashboardUserInfo();
     initDailyBonusUI();
@@ -21,15 +21,13 @@ function updateDashboardUserInfo() {
     }
     document.getElementById('detail-email').textContent = email || '-';
 
-    // Berechne ausgegebenes Geld
     updateSpentMoney();
 
-    // Wenn CoinsManager vorhanden ist, Dashboard-Coin-Anzeige aktualisieren
     if (typeof CoinsManager !== 'undefined' && CoinsManager.updateCoinsDisplay) {
         CoinsManager.updateCoinsDisplay();
     }
 }
-
+// Berechne und aktualisiere das ausgegebene Geld im Dashboard
 function updateSpentMoney() {
     const spentMoneyEl = document.getElementById('detail-spent-money');
     if (!spentMoneyEl) return;
@@ -48,7 +46,7 @@ function updateSpentMoney() {
         spentMoneyEl.textContent = '0,00 €';
     }
 }
-
+// Aktualisiere Dashboard Statistiken
 function updateDashboardStats() {
     try {
         const wonEl = document.getElementById('stats-won');
@@ -73,7 +71,7 @@ function updateDashboardStats() {
                 const sign = avgPerGame >= 0 ? '+' : '';
                 avgEl.innerHTML = `${sign}${avgFormatted} <i class="ri-coin-line"></i>`;
                 
-                // Färbe positiv/negativ
+                // Farbfärbung
                 if (avgPerGame > 0) {
                     avgEl.style.color = '#16a34a';
                 } else if (avgPerGame < 0) {
@@ -88,7 +86,7 @@ function updateDashboardStats() {
         }
     } catch (e) {}
 }
-
+// Gesamtanzahl gespielter Spiele 
 function getTotalGamesPlayed() {
     try {
         const historyData = JSON.parse(localStorage.getItem('gameHistory') || '{}');
@@ -114,7 +112,7 @@ window.addEventListener('storage', (e) => {
     }
 });
 
-// Game History Logic
+//  Spielhistorie
 const GAME_NAMES = {
     'spinwheel': { name: 'Spin Wheel', icon: '🎡' },
     'higherlower': { name: 'Higher/Lower', icon: '🎲' },
@@ -132,7 +130,6 @@ function updateGameHistory() {
 
         if (!favGameIcon || !favGameName || !favGameCount || !allGamesList) return;
 
-        // Finde das am häufigsten gespielte Spiel
         let maxGame = null;
         let maxCount = 0;
         const games = Object.entries(historyData);
@@ -159,7 +156,7 @@ function updateGameHistory() {
         if (games.length === 0) {
             allGamesList.innerHTML = '<li>Noch keine Spiele gespielt</li>';
         } else {
-            // Sortiere nach Häufigkeit
+    
             games.sort((a, b) => b[1] - a[1]);
             allGamesList.innerHTML = games
                 .map(([gameKey, count]) => {
@@ -179,7 +176,7 @@ function updateGameHistory() {
     }
 }
 
-// Funktion zum Tracken von Spielen (wird von den Spielen aufgerufen)
+// Spiele Tracker
 function trackGamePlayed(gameKey) {
     try {
         const historyData = JSON.parse(localStorage.getItem('gameHistory') || '{}');
@@ -194,15 +191,14 @@ function trackGamePlayed(gameKey) {
     }
 }
 
-// Live-Updates für Spielhistorie
+// Live Updates für Spielhistorie
 window.addEventListener('gamehistorychange', updateGameHistory);
 
-// Global verfügbar machen
 if (typeof window !== 'undefined') {
     window.trackGamePlayed = trackGamePlayed;
 }
 
-// Daily Bonus Logic
+// Tagesbonus Funktionen
 const DAILY_BONUS_KEY = 'dailyBonusLastClaimDate';
 const DAILY_BONUS_AMOUNT = 500;
 
@@ -241,13 +237,11 @@ function initDailyBonusUI() {
             setDailyBonusClaimedUI();
         }
     } catch (e) {
-        // localStorage evtl. nicht verfügbar – UI bleibt im Standardzustand
     }
 }
 
 function showToast(message) {
     try {
-        // Entferne evtl. vorhandenen Toast
         const existing = document.querySelector('.toast');
         if (existing) existing.remove();
 
@@ -258,7 +252,6 @@ function showToast(message) {
         toast.textContent = message;
         document.body.appendChild(toast);
 
-        // Reflow, dann anzeigen
         void toast.offsetWidth;
         toast.classList.add('toast--show');
 
@@ -267,7 +260,6 @@ function showToast(message) {
             setTimeout(() => toast.remove(), 250);
         }, 2500);
     } catch (e) {
-        // Fallback
         alert(message);
     }
 }
@@ -277,12 +269,10 @@ function claimDailyBonus() {
     try {
         const last = localStorage.getItem(DAILY_BONUS_KEY);
         if (last === today) {
-            // Bereits abgeholt – nur UI-Status setzen
             setDailyBonusClaimedUI();
             return;
         }
     } catch (e) {
-        // Ignoriere Storage-Fehler, gewähre Bonus einmalig in dieser Session
     }
 
     // Coins gutschreiben
@@ -290,16 +280,13 @@ function claimDailyBonus() {
         CoinsManager.addCoins(DAILY_BONUS_AMOUNT);
     }
 
-    // Persistieren, dass der Bonus heute eingelöst wurde
     try {
         localStorage.setItem(DAILY_BONUS_KEY, today);
     } catch (e) {
-        // Falls Storage fehlschlägt, UI trotzdem aktualisieren
     }
 
-    // UI aktualisieren
     setDailyBonusClaimedUI();
 
-    // Hinweis anzeigen
+    // Displaynachricht
     showToast('🎉 Du hast 500 Coins erhalten!');
 }
