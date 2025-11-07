@@ -170,6 +170,43 @@ document.addEventListener("DOMContentLoaded", () => {
         drawWheel();
     }
 
+    function initNavigationMenu() {
+        if (window.__slotNavMenuInitialized) return;
+
+        const menuBtn = document.getElementById("menu-btn");
+        const navLinks = document.getElementById("nav-links");
+        const menuIcon = menuBtn ? menuBtn.querySelector("i") : null;
+
+        if (!menuBtn || !navLinks || !menuIcon) return;
+
+        const closeMenu = () => {
+            navLinks.classList.remove("open");
+            menuIcon.className = "ri-menu-line";
+            document.body.style.overflow = "";
+        };
+
+        menuBtn.addEventListener("click", () => {
+            navLinks.classList.toggle("open");
+            const isOpen = navLinks.classList.contains("open");
+            menuIcon.className = isOpen ? "ri-close-line" : "ri-menu-line";
+            document.body.style.overflow = isOpen ? "hidden" : "";
+        });
+
+        navLinks.addEventListener("click", (evt) => {
+            if (evt.target.tagName === "A") {
+                closeMenu();
+            }
+        });
+
+        document.addEventListener("click", (evt) => {
+            if (!navLinks.contains(evt.target) && !menuBtn.contains(evt.target)) {
+                closeMenu();
+            }
+        });
+
+        window.__slotNavMenuInitialized = true;
+    }
+
     spinBtn.addEventListener("click", () => {
         if (state.spinning) return;
 
@@ -181,7 +218,6 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
-        // Track game play
         if (typeof window.trackGamePlayed === 'function') {
             window.trackGamePlayed('spinwheel');
         }
@@ -207,4 +243,5 @@ document.addEventListener("DOMContentLoaded", () => {
     updateScoreDisplay();
     syncCanvasSize();
     drawWheel();
+    initNavigationMenu();
 });

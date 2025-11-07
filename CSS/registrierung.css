@@ -138,16 +138,9 @@
   color: var(--primary-color-dark);
 }
 
-/* ===== RESPONSIVE DESIGN FÜR REGISTRIERUNG SEITE ===== */
+/* RESPONSIVE DESIGN FÜR REGISTRIERUNG SEITE */
 
-/* Tablet (width <= 1024px) */
-@media (width <= 1024px) {
-  .container {
-    padding: 20px;
-  }
-}
-
-/* Mobile (width <= 768px) */
+/* Mobile */
 @media (width <= 768px) {
   .box {
     padding: 5rem 1rem 2rem;
@@ -162,7 +155,7 @@
   }
 }
 
-/* Small Mobile (width <= 480px) */
+/* Small Mobile */
 @media (width <= 480px) {
   .container {
     padding: 20px 16px;

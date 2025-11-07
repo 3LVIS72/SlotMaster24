@@ -1,5 +1,4 @@
 // RollTheDice – High/Low
-// Fair RNG: crypto.getRandomValues, keine modulo-bias
 
 //Random Zahl generieren
 function randIntInclusive(min, max) {

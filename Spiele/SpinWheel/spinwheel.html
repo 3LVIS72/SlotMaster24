@@ -72,37 +72,5 @@
     <script src="/JS/dashboard.js"></script>
     <script src="spinwheel.js"></script>
     <script src="/JS/navbar.js"></script>
-    <script>
-      (function () {
-        const menuBtn = document.getElementById('menu-btn');
-        const navLinks = document.getElementById('nav-links');
-        const menuIcon = menuBtn ? menuBtn.querySelector('i') : null;
-
-        if (!menuBtn || !navLinks || !menuIcon) return;
-
-        menuBtn.addEventListener('click', () => {
-          navLinks.classList.toggle('open');
-          const isOpen = navLinks.classList.contains('open');
-          menuIcon.className = isOpen ? 'ri-close-line' : 'ri-menu-line';
-          document.body.style.overflow = isOpen ? 'hidden' : '';
-        });
-
-        navLinks.addEventListener('click', (evt) => {
-          if (evt.target.tagName === 'A') {
-            navLinks.classList.remove('open');
-            menuIcon.className = 'ri-menu-line';
-            document.body.style.overflow = '';
-          }
-        });
-
-        document.addEventListener('click', (evt) => {
-          if (!navLinks.contains(evt.target) && !menuBtn.contains(evt.target)) {
-            navLinks.classList.remove('open');
-            menuIcon.className = 'ri-menu-line';
-            document.body.style.overflow = '';
-          }
-        });
-      })();
-    </script>
   </body>
 </html>

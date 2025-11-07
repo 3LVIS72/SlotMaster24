@@ -11,7 +11,7 @@
   --header-font: "Bebas Neue", sans-serif;
 }
 
-/* ===== RESET & BASE STYLES ===== */
+/* RESET & BASE STYLES */
 * {
   padding: 0;
   margin: 0;
@@ -40,7 +40,7 @@ main {
   width: 100%;
 }
 
-/* ===== NAVIGATION ===== */
+/* NAVIGATION */
 nav {
   padding-block: 2rem 0;
   padding-inline: 1rem;
@@ -140,7 +140,7 @@ nav {
   background-color: var(--primary-color-dark);
 }
 
-/* ===== FOOTER ===== */
+/* Footer */
 footer {
   margin-top: auto;
   width: 100%;
@@ -161,7 +161,7 @@ footer a:hover {
   color: var(--primary-color-dark);
 }
 
-/* ===== RESPONSIVE DESIGN - MOBILE ===== */
+/* RESPONSIVE DESIGN - MOBILE */
 @media (width <= 768px) {
   /* Navigation für Mobile */
   nav {

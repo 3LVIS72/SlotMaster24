@@ -31,7 +31,7 @@
   text-align: left;
 }
 
-/* Kleine Zocken Zocken Zocken im Header */
+/* Kleines "Zocken Zocken Zocken" im Header */
 .header__content .bar {
   font-size: 1rem;
   color: var(--text-light);
@@ -161,7 +161,7 @@
     background: rgba(255,255,255,0.1);
 }
 
-/* ===== RESPONSIVE DESIGN FÜR HOME PAGE ===== */
+/* RESPONSIVE DESIGN FÜR HOME PAGE */
 
 /* Tablet (width <= 1024px) */
 @media (width <= 1024px) {
@@ -171,7 +171,7 @@
   }
 }
 
-/* Mobile (width <= 768px) */
+/* Mobile */
 @media (width <= 768px) {
   /* Header Content - Mehr Abstand nach oben für Fixed Nav */
   .header__container {
@@ -210,7 +210,7 @@
   }
 }
 
-/* Small Mobile (width <= 480px) */
+/* Small Mobile */
 @media (width <= 480px) {
   .header__content h1 {
     font-size: 2.5rem;

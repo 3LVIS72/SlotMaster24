@@ -8,6 +8,7 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="/CSS/global.css"/>
+    <link rel="stylesheet" href="/CSS/coins.css" />
     <link rel="stylesheet" href="/CSS/home.css" />
     <title>SlotMaster24</title>
   </head>
@@ -32,6 +33,8 @@
       <div class="nav__btns">
         <a href="/HTML/registrierung.html" class="btn sign__up" id="nav-register">Registrierung</a>
         <a href="/HTML/login.html" class="btn sign__in" id="nav-login">Anmelden</a>
+        <span id="nav-coins" class="coins-display" style="display:none;"></span>
+        <button class="btn sign__out" id="nav-logout" style="display:none;">Abmelden</button>
       </div>
     </nav>
 
@@ -78,6 +81,9 @@
 
     <!-- Scroll Reveal Script und JavaScript Dateien -->
     <script src="https://unpkg.com/scrollreveal"></script>
+    <script src="/JS/auth.js"></script>
+    <script src="/JS/coins.js"></script>
+    <script src="/JS/navbar.js"></script>
     <script src="/JS/home.js"></script>
   </body>
 </html>

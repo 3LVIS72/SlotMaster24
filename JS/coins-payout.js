@@ -39,14 +39,6 @@ function maskIban(iban){
   return compact.slice(0,4) + ' **** **** ' + compact.slice(-4);
 }
 
-function show(msg){
-  try {
-    showToast(msg);
-  } catch(e){
-    alert(msg);
-  }
-}
-
 function showToast(message) {
   try {
     // Entferne evtl. vorhandenen Toast
@@ -86,16 +78,16 @@ function onSubmit(e){
   const name = String(nameEl.value||'').trim();
   const ref = String(refEl.value||'').trim();
 
-  if (amount < 1000) { show('Mindestbetrag für Auszahlung: 1.000 Coins (= 1,00 €)'); return; }
-  if (!iban || !name){ show('Bitte IBAN und Kontoinhaber ausfüllen.'); return; }
+  if (amount < 1000) { showToast('Mindestbetrag für Auszahlung: 1.000 Coins (= 1,00 €)'); return; }
+  if (!iban || !name){ showToast('Bitte IBAN und Kontoinhaber ausfüllen.'); return; }
   if (typeof CoinsManager === 'undefined' || typeof CoinsManager.getWithdrawableCoins !== 'function'){
-    show('CoinsManager nicht verfügbar.'); return;
+    showToast('CoinsManager nicht verfügbar.'); return;
   }
   
   // Prüfe auszahlbares Guthaben (nicht Gesamt-Coins!)
   const withdrawable = CoinsManager.getWithdrawableCoins();
   if (withdrawable < amount) { 
-    show(`Nicht genug auszahlbare Coins. Verfügbar: ${fmt(withdrawable)} Coins`); 
+    showToast(`Nicht genug auszahlbare Coins. Verfügbar: ${fmt(withdrawable)} Coins`); 
     return; 
   }
 
@@ -112,7 +104,7 @@ function onSubmit(e){
 
   renderCashouts();
   updateWithdrawableDisplay();
-  show(`Anfrage erstellt: ${fmt(amount)} Coins (${euroAmount} €). Status: pending`);
+  showToast(`Anfrage erstellt: ${fmt(amount)} Coins (${euroAmount} €). Status: pending`);
   try { e.target.reset(); amountEl.value = 1000; } catch(err){}
 }
 
