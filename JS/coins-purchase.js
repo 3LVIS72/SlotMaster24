@@ -39,13 +39,6 @@
     }
   }
 
-  function notify(message) {
-    try {
-      const evt = new CustomEvent('toast', { detail: { message } });
-      window.dispatchEvent(evt);
-    } catch (err) {}
-  }
-
   function savePurchaseHistory(entry) {
     try {
       const history = JSON.parse(localStorage.getItem('purchaseHistory') || '[]');
@@ -80,7 +73,6 @@
     const coinsText = `${formatCoins(pack.coins)} Coins`;
     const priceText = formatPrice(pack.price);
 
-    notify(`+${coinsText} gutgeschrieben`);
     return { method, methodName, coinsText, priceText };
   }
 

@@ -1,5 +1,4 @@
-/* RollTheDice – Page Styles */
-/* nutzt Variablen aus global.css: --primary-color, --text-dark, --text-light, --white */
+/* RollTheDice – Styles */
 
 .rtd__back {
     max-width: var(--max-width);

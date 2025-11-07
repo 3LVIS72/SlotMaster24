@@ -1,4 +1,4 @@
-/* ===== SPIELE-SEITE STYLES ===== */
+/* SPIELE-SEITE STYLES */
 
 /* Haupt-Container für die Spiele-Seite */
 .spiele-page main {
@@ -101,16 +101,9 @@
   line-height: 1.6;
 }
 
-/* ===== RESPONSIVE DESIGN FÜR SPIELE SEITE ===== */
+/* RESPONSIVE DESIGN FÜR SPIELE SEITE */
 
-/* Tablet (width <= 1024px) */
-@media (width <= 1024px) {
-  .spiele_grid {
-    grid-template-columns: repeat(2, minmax(250px, 1fr));
-  }
-}
-
-/* Mobile (width <= 768px) */
+/* Mobile */
 @media (width <= 768px) {
   .spiele_grid {
     grid-template-columns: 1fr;
@@ -132,7 +125,7 @@
   }
 }
 
-/* Small Mobile (width <= 480px) */
+/* Small Mobile */
 @media (width <= 480px) {
   .spiele_main_container h2 {
     font-size: 2rem;

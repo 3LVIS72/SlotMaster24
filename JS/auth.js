@@ -8,11 +8,7 @@ const mockUsers = [
 function getUsers() {
     const storedUsers = localStorage.getItem('registeredUsers');
     const savedUsers = storedUsers ? JSON.parse(storedUsers) : [];
-    return [
-        { username: "test", email: "test@example.com", password: "123456" },
-        { username: "admin", email: "admin@example.com", password: "admin123" },
-        ...savedUsers
-    ];
+    return [...mockUsers, ...savedUsers];
 }
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -103,156 +99,22 @@ function checkLoginStatus() {
     const isGamePage = currentPage.startsWith('/Spiele/') && currentPage.endsWith('.html');
     
     if (!isLoggedIn) {
-        // Wenn nicht eingeloggt und bereits auf der Hinweis-Seite → Navigation trotzdem aktualisieren
-        if (isLoginRequiredPage) {
-            updateNavigation();
-            return;
-        }
-        if (protectedPages.includes(currentPage) || isGamePage) {
+        if ((protectedPages.includes(currentPage) || isGamePage) && !isLoginRequiredPage) {
             window.location.href = loginRequiredPage;
-            return;
         }
+        return;
     }
     
-    // Wenn Hinweis-Seite aufgerufen aber eingeloggt → zu Spieleübersicht
-    if (isLoggedIn && isLoginRequiredPage) {
+    if (isLoginRequiredPage) {
         window.location.href = '/HTML/spiele.html';
         return;
     }
     
-    // Wenn auf Login/Registrierung und bereits eingeloggt → zum Dashboard
-    if ((currentPage.includes('login.html') || currentPage.includes('registrierung.html')) && isLoggedIn) {
+    if (
+        currentPage.includes('login.html') ||
+        currentPage.includes('registrierung.html') ||
+        currentPage.includes('home.html')
+    ) {
         window.location.href = '/HTML/dashboard.html';
-        return;
-    }
-    
-    // Wenn auf home.html und eingeloggt → zum Dashboard
-    if (currentPage.includes('home.html') && isLoggedIn) {
-        window.location.href = '/HTML/dashboard.html';
-        return;
-    }
-    
-    // Update Navigation basierend auf Login-Status
-    updateNavigation();
-}
-
-// Navigation anpassen basierend auf Login-Status
-function updateNavigation() {
-    const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
-    const userUsername = localStorage.getItem('userUsername');
-    
-    // Navigation Buttons updaten
-    const navBtns = document.querySelector('.nav__btns');
-    // Entferne eventuell verbliebene Text-Knoten mit Begrüßungen (z.B. "Hallo, ...")
-    if (navBtns) {
-        for (const node of Array.from(navBtns.childNodes)) {
-            if (node.nodeType === Node.TEXT_NODE && /Hallo\s*,?/i.test(node.textContent || '')) {
-                navBtns.removeChild(node);
-            }
-        }
-    }
-    if (navBtns) {
-        if (isLoggedIn) {
-            // Wenn bereits ein #nav-coins Element existiert (in den HTML-Dateien), verwende es
-            const existingCoins = document.getElementById('nav-coins');
-            if (existingCoins) {
-                // Leere navBtns und verschiebe das vorhandene coins-Element hinein
-                navBtns.innerHTML = '';
-                navBtns.appendChild(existingCoins);
-                const logoutBtn = document.createElement('button');
-                logoutBtn.className = 'btn sign__in';
-                logoutBtn.onclick = handleLogout;
-                logoutBtn.innerHTML = '<i class="ri-logout-box-r-line"></i> Abmelden';
-                navBtns.appendChild(logoutBtn);
-            } else {
-                // Ansonsten das Coins-Element dynamisch hinzufügen
-                navBtns.innerHTML = `
-                    <span id="nav-coins" class="coins-display" style="display:none;"></span>
-                    <button class="btn sign__in" onclick="handleLogout()">
-                        <i class="ri-logout-box-r-line"></i> Abmelden
-                    </button>
-                `;
-            }
-        } else {
-            navBtns.innerHTML = `
-                <a href="/HTML/registrierung.html" class="btn sign__up">Registrieren</a>
-                <a href="/HTML/login.html" class="btn sign__in">Anmelden</a>
-            `;
-        }
-    }
-    
-    //  AUTOMATISCHE NAVIGATION: Links für eingeloggte/nicht-eingeloggte Benutzer
-    updateNavLinks(isLoggedIn);
-
-    // Falls CoinsManager verfügbar ist, sofort die Coin-Anzeige aktualisieren
-    if (typeof CoinsManager !== 'undefined' && CoinsManager.updateCoinsDisplay) {
-        CoinsManager.updateCoinsDisplay();
     }
 }
-
-// Führe ein zweites Mal aus, wenn das Fenster vollständig geladen ist,
-// damit späte Skripte überschrieben werden (defensive Maßnahme)
-window.addEventListener('load', function() {
-    try {
-        updateNavigation();
-    } catch (e) {
-        // ignore
-    }
-});
-
-// AUTOMATISCHE NAVIGATION: Links anpassen
-function updateNavLinks(isLoggedIn) {
-    const navLinks = document.querySelector('.nav__links');
-    if (!navLinks) return;
-    
-    const links = navLinks.querySelectorAll('a');
-    const currentPage = window.location.pathname;
-    
-    links.forEach(link => {
-        const href = link.getAttribute('href');
-        
-        if (isLoggedIn) {
-            // EINGELOGGT: Home → Dashboard ändern
-            if (href === '/HTML/home.html') {
-                link.setAttribute('href', '/HTML/dashboard.html');
-                link.textContent = 'Dashboard';
-            }
-        } else {
-            // NICHT EINGELOGGT: Dashboard → Home ändern
-            if (href === '/HTML/dashboard.html') {
-                link.setAttribute('href', '/HTML/home.html');
-                link.textContent = 'Home';
-            }
-        }
-        
-        // Aktuelle Seite markieren
-        if (href === currentPage || 
-            (currentPage.includes('dashboard.html') && href === '/HTML/dashboard.html') ||
-            (currentPage.includes('home.html') && href === '/HTML/home.html')) {
-            link.style.borderBottom = '4px solid var(--primary-color)';
-        } else {
-            link.style.borderBottom = '4px solid transparent';
-        }
-    });
-    
-    // Logo-Link anpassen
-    const navLogo = document.querySelector('.nav__logo a');
-    if (navLogo) {
-        if (isLoggedIn) {
-            navLogo.setAttribute('href', '/HTML/dashboard.html');
-        } else {
-            navLogo.setAttribute('href', '/HTML/home.html');
-        }
-    }
-}
-
-// Logout-Funktion
-function handleLogout() {
-    localStorage.removeItem('isLoggedIn');
-    localStorage.removeItem('userUsername');
-    localStorage.removeItem('userEmail');
-    window.location.href = '/HTML/home.html';
-}
-
-// Globale Funktion verfügbar machen
-window.handleLogout = handleLogout;

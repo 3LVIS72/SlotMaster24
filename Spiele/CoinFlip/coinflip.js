@@ -1,4 +1,4 @@
-// === Gemeinsame Coin-Logik (Fallback, falls CoinsManager fehlt) ===
+// Gemeinsame Coin-Logik für Spiele
 (function () {
   var fallbackCoins = 1000;
 
@@ -67,7 +67,7 @@
     }
   }
 
-  // === Coin Flip Logik ===
+  // Coin Flip Logik 
   var elCoin = document.getElementById("coin");
   var elBalance = document.getElementById("balance");
   var elBet = document.getElementById("bet");
